@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" 
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url> 
+    <loc>https://www.chromemufflerbearing.com/</loc> 
+    <lastmod>2020-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+       <image:loc>https://www.chromemufflerbearing.com/chrome_muffler_fox_whitebg_1200x912.png</image:loc>
+       <image:caption>chromemufflerbearing.com Automotive Repair Shop Management Software</image:caption>
+    </image:image>
+    <image:image>
+       <image:loc>https://chromemufflerbearing.com/uploads/20180324110640/20200403235632cmb_autosoftware_orig-1.png</image:loc>
+       <image:caption>A view from the side of a modern muscle car with nature in the background</image:caption>
+    </image:image>
+  </url>
+</urlset>

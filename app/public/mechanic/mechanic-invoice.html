@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-mechanic.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <script src="https://chromemufflerbearing.com/mechanic/mechanic-startnew.js"></script>  
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+    <script src="https://chromemufflerbearing.com/moment.js"></script>
+    <script src="https://chromemufflerbearing.com/mechanic/invoice-save.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+        #is_norepaircost {display:none;}
+        #next_screen, #stop_work_screen, #error_screen, #sendtext_screen {display:none;}
+    </style>
+
+    </head>
+    <div>
+    <div id="main_content_wrapper">            
+        <div class="left-gutter" id="left-gutter">
+            <div class="far-left">
+                <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+            </div>
+            <div class="mid-left">
+                <div id="mid-left-panel-home">
+                    <div class="mid-left-panel-wrapper-load margin-left-panel">
+                        <h2 id="vehicle-info-ymme"></h2>
+                        <div id="go-customer-view"></div>
+                        <div id="go-back-home"></div>
+                        <div id="go-admin-home"></div>
+                        <h4 class="colorprimary big-button margin5 marginleft5" id="open-sendtext-screen">Invoice Text</h4>
+                    </div>
+                </div>
+                <div id="mid-left-panel-inspection">
+                        <div class="mid-left-panel-wrapper-load">
+                            <h4>Select an inspection</h4>
+                            <h4 id="start_new_inspection">New Inspection</h4>
+                            <div class="nav-list-wrapper" id="inspection-list"></div>
+                        </div>
+                </div>
+
+                <div id="mid-left-panel-message">
+                        <div class="mid-left-panel-wrapper-load" id="message-left-panel">
+                            <h1></h1>
+                            <div id="pagelist"></div>
+                        </div>
+                </div>
+                <div id="mid-left-panel-invoice">
+                        <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                            <h2 class="colorprimary big-button margin5 marginleft5" id="start_new_invoice">New Invoice</h2>
+                            <h2>Select an Invoice</h2>
+                            <div id="pagelist">
+                            </div>
+                            <div id="invoice-total-list"></div>
+                        </div>
+                </div>
+
+    
+            </div>
+    </div><!--end left gutter-->
+
+<script>
+    $(function() {
+        $('#save_price_row').click(function(){
+            savepart();
+        });
+
+        $('#save_labor_row').click(function(){
+            savelabor();
+        });
+
+        $('#start_new_invoice').click(function(){
+            startinvoice();
+        });
+
+        $('#update_invoice_note').click(function(){
+            updateinvoicenote();
+        });
+
+
+        $('#open-sendtext-screen').click(function(){
+            
+            closeotherscreens();
+            $('#sendtext_screen').css('display', 'grid');
+                animateCSS('#sendtext_screen', 'slideInRight', function() {
+
+                });
+            
+        });
+
+        $('#close-sendtext-screen').click(function(){
+            animateCSS('#sendtext_screen', 'slideOutRight', function() {
+            
+            $('#sendtext_screen').css('display', 'none');
+            closeotherscreens();
+            $('#home_screen').css('display', 'grid');   
+                animateCSS('#home_screen', 'slideInRight', function() {
+                  
+                });
+            });
+            
+        });
+
+        function closeotherscreens() {
+            $('#home_screen').css('display', 'none');
+            $('#sendtext_screen').css('display', 'none');        
+        }
+
+        $('#part_invoice_id').val($('#invoiceid').val());
+        $('#hour_invoice_id').val($('#invoiceid').val());
+
+
+        loadthisinvoice();
+
+var loadthisinvoicecode = 0;
+function loadthisinvoice() {
+    var plate = $('#theplate').val();
+    var invoiceid = $('#invoiceid').val();
+    $.ajax({
+        type: "POST",
+        url: "https://chromemufflerbearing.com/view/repair/invoice/single",
+        data: {
+            plate: plate,
+            invoiceid: invoiceid
+        }
+    })
+    .done(function( data ) {
+        loadthisinvoicecode = 1;
+
+        var jsonStr = JSON.stringify(data);
+        var jsonData = JSON.parse(jsonStr);
+        for (var i = 0; i < jsonData.length; ++i) {
+            $('#invoice-details').html('<div><h3>' + jsonData[i].workdesc + '</h3></div><div></div>');
+            $('#invoice_type').val(jsonData[i].typeof);
+                if (jsonData[i].typeof === 'invoice') {
+                    $('#select-invoice').css('background-color', '#292929');
+                    $('#select-invoice').css('color', '#f1f1f1');
+                    $('#select-workorder').css('background-color', '#f1f1f1');
+                    $('#select-workorder').css('color', '#292929');
+                }
+                if (jsonData[i].typeof === 'workorder') {
+                    $('#select-workorder').css('background-color', '#292929');
+                    $('#select-workorder').css('color', '#f1f1f1');
+                    $('#select-invoice').css('background-color', '#f1f1f1');
+                    $('#select-invoice').css('color', '#292929');                    
+                }
+                if (jsonData[i].invoicestatus ==='paid') {
+                    $('#select-paid').css('background-color', '#292929');
+                    $('#select-paid').css('color', '#f1f1f1');
+                    $('#select-unpaid').css('background-color', '#f1f1f1');
+                    $('#select-unpaid').css('color', '#292929');
+                }
+                if (jsonData[i].invoicestatus ==='unpaid') {
+                    $('#select-unpaid').css('background-color', '#292929');
+                    $('#select-unpaid').css('color', '#f1f1f1');
+                    $('#select-paid').css('background-color', '#f1f1f1');
+                    $('#select-paid').css('color', '#292929');
+                }
+                if (jsonData[i].isnorepaircost ==='yes') {
+                    $('#select-reassemble-yes').css('background-color', '#292929');
+                    $('#select-reassemble-yes').css('color', '#f1f1f1');
+                    $('#select-reassemble-no').css('background-color', '#f1f1f1');
+                    $('#select-reassemble-no').css('color', '#292929');
+                }
+                if (jsonData[i].isnorepaircost ==='no') {
+                    $('#select-reassemble-no').css('background-color', '#292929');
+                    $('#select-reassemble-no').css('color', '#f1f1f1');
+                    $('#select-reassemble-yes').css('background-color', '#f1f1f1');
+                    $('#select-reassemble-yes').css('color', '#292929');
+                }
+            $('#invoice_status').val(jsonData[i].invoicestatus);
+            $('#invoice_note').val(jsonData[i].workdesc);
+            $('#is_norepair_cost').val(jsonData[i].isnorepaircost);
+            $('#input_date').val(jsonData[i].expecteddate);
+            $('#input_date2').val(jsonData[i].expecteddate);
+            $('#invoice_signature').val(jsonData[i].invoicesignature);//prepared by
+            $('#invoice_odometer').val(jsonData[i].invoiceodometer);
+            $('#invoice_address').val(jsonData[i].invoiceaddress);
+            $('#invoice_customer_name').val(jsonData[i].invoicecustomername);
+            $('#invoice_registration_number').val(jsonData[i].invoiceregistrationnumber);
+            $('#invoice_yearmake').val(jsonData[i].invoiceyearmake);
+            
+        }
+        loadapproval();
+
+    })
+    .fail(function( xhr, status, errorThrown ) {
+        if (loadthisinvoicecode === 0) {
+            loadthisinvoice();
+        }
+    })
+    .always(function( xhr, status ) {
+
+    });
+
+};
+
+
+
+    var updateinvoicenotecode = 0;
+    function updateinvoicenote() {
+        var theymme = '';
+        var plate = $('#theplate').val();
+        var token = $('#token').val();
+        var invoiceid = $('#invoiceid').val();
+        var invoicenote = $('#invoice_note').val();
+        var invoicetype = $('#invoice_type').val();
+        var invoicestatus = $('#invoice_status').val(); 
+        var expecteddate = $('#input_date').val(); // expected done date
+        var isnorepaircost = $('#is_norepair_cost').val(); // is this the 'cost of reasssembly without repair' estimate?
+        var invoicesignature = $('#invoice_signature').val();
+        var invoiceodometer = $('#invoice_odometer').val();
+        var invoiceyearmake = $('#invoice_yearmake').val();
+        var invoiceaddress = $('#invoice_address').val();
+        var invoicecustomername = $('#invoice_customer_name').val();
+        var invoiceregistrationnumber = $('#invoice_registration_number').val();
+
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/api/edit/invoice/",
+            data: {
+                token: token,
+                plate: plate,
+                invoiceid: invoiceid,
+                invoicestatus: invoicestatus,
+                typeof: invoicetype,
+                workdesc: invoicenote,
+                isnorepaircost: isnorepaircost,
+                expecteddate: expecteddate,
+                invoicesignature: invoicesignature,
+                invoiceodometer: invoiceodometer,
+                invoiceyearmake: invoiceyearmake,
+                invoiceaddress: invoiceaddress,
+                invoicecustomername: invoicecustomername,
+                invoiceregistrationnumber: invoiceregistrationnumber
+            }
+        })
+        .done(function( data ) {
+            updateinvoicenotecode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+			for (var i = 0; i < jsonData.length; ++i) {
+                
+            }
+            $('#update_invoice_note_return').append('<h3>Invoice Note Updated</h3>');
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (updateinvoicenotecode === 0) {
+                updateinvoicenote();
+            }
+        })
+        .always(function( xhr, status ) {
+            
+        });
+
+    };
+
+
+
+    
+    var savepartrowcode = 0;
+    var grandtotal = 0;
+    var totalpartprice = 0;
+    var totallaborprice = 0;
+
+    loadpartlistgarage();
+    loadlaborlistgarage();
+    loadinvoicelist();
+    
+    function savepart() {
+        totalpartprice = 0;
+
+        var whatswrong = '';
+        var plate = $('#theplate').val();
+        var token = $('#token').val();
+        var partcondition = $('#part_condition').val();
+        var partnumber = $('#part_number').val();
+        var partdesc = $('#part_desc').val();
+        var partprice = $('#part_price').val();
+        var partcount = $('#part_count').val();
+        var invoiceid = $('#part_invoice_id').val();
+
+        var curprice = parseInt(partprice);
+        var curpartcount = parseInt(partcount);
+        var curlinetotal = curprice * curpartcount;
+
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/api/save/repair/part",
+            data: {
+                token: token,
+                plate: plate,
+                partcondition: partcondition,
+                partnumber: partnumber,
+                part: partdesc,
+                partcount: partcount,
+                partprice: partprice,
+                linetotal: curlinetotal,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            savepartrowcode = 1;          
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+           
+            
+            $('#part-price-list').html("</ br>");
+            $('#invoice-parts-list').html("</ br>");
+            $('#invoice-total-list').html("</ br>");
+
+			for (var i = 0; i < jsonData.length; ++i) {
+                var theprice = parseInt(jsonData[i].partprice);
+                var thecount = parseInt(jsonData[i].partcount);
+                var thelinetotal = theprice * thecount;
+                totalpartprice = totalpartprice + thelinetotal;
+                var j = i + 1;
+                $('#invoice-parts-list').append('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+jsonData[i].linetotal+'</h3></div><div></div><div></div><div><h3>$'+jsonData[i].partprice+' x '  + jsonData[i].partcount + '</h3><p>'+jsonData[i].part+'</p><p> ' + jsonData[i].partcondition + '</p><p>'+jsonData[i].partnumber+'</p></div><div></div><div><h1><a href="https://chromemufflerbearing.com/api/remove/part/'+jsonData[i].plate+'/'+jsonData[i].timestamp+'?token='+token+'">X</a></h1></div></div>');
+            }
+
+            grandtotal = totalpartprice + totallaborprice;
+            grandtotal = Math.round(grandtotal);
+            
+            $('#invoice-hours-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totallaborprice+'</h3></div><div></div><div></div><div><h3>'+totallaborprice+'</h3><p>Labor Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-parts-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totalpartprice+'</h3></div><div></div><div></div><div><h3>'+totalpartprice+'</h3><p>Parts Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3>'+grandtotal+'</h3><p>Grand Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3><a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay</a></h3></div><div></div><div><h1>+</h1></div></div>');
+
+            $('#part_desc').val('');
+            $('#part_price').val('');
+
+            $('#update_save_part_return').append('<h5>' + partdesc + ' Saved</h5>');
+
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (savepartrowcode === 0) {
+                savepart();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+
+    };
+
+    var savelaborcode = 0;
+    function savelabor() {
+        totallaborprice = 0;
+        var whatswrong = '';
+        var plate = $('#theplate').val();
+        var token = $('#token').val();
+        var partdesc = $('#hour_desc').val();
+        var hourprice = $('#hour_price').val();
+        var hourtime = $('#hour_time').val();
+        var techname = $('#labor_tech_name').val();
+        var invoiceid = $('#hour_invoice_id').val();
+
+                var hourrate = parseFloat(hourprice);
+                var hourqty = parseFloat(hourtime);
+                var curlinetotal = hourrate * hourqty;
+
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/api/save/repair/hour",
+            data: {
+                token: token,
+                plate: plate,
+                techname: techname,
+                desc: partdesc,
+                hours: hourtime,
+                hourprice: hourprice,
+                linetotal: curlinetotal,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            savelaborcode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            var loadlaborcode = 0;
+            $('#labor-price-list').html('</ br>');
+
+            $('#invoice-hours-list').html("</ br>");
+            $('#invoice-total-list').html("</ br>");
+
+            for (var i = 0; i < jsonData.length; ++i) {
+                var theprice = parseFloat(jsonData[i].hourprice);
+                var thehours = parseFloat(jsonData[i].hours);
+                var linetotal = theprice * thehours;
+                totallaborprice = totallaborprice + linetotal;
+                var j = i + 1;
+                $('#invoice-hours-list').append('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+linetotal+'</h3></div><div></div><div></div><div><h3>'+jsonData[i].hours+' @ $' +jsonData[i].hourprice+'</h3><p>'+jsonData[i].desc+'</p><p>'+jsonData[i].techname+'</p></div><div></div><div><h1><a href="https://chromemufflerbearing.com/api/remove/hour/'+jsonData[i].plate+'/'+jsonData[i].timestamp+'?token='+token+'">X</a></h1></div></div>');
+            }
+
+            grandtotal = totalpartprice + totallaborprice;
+            grandtotal = Math.round(grandtotal);
+
+            $('#invoice-hours-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totallaborprice+'</h3></div><div></div><div></div><div><h3>'+totallaborprice+'</h3><p>Labor Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-parts-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totalpartprice+'</h3></div><div></div><div></div><div><h3>'+totalpartprice+'</h3><p>Parts Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3>'+grandtotal+'</h3><p>Grand Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3><a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay</a></h3></div><div></div><div><h1>+</h1></div></div>');
+
+            $('#hour_desc').val('');
+            $('#hour_price').val('');
+            $('#hour_time').val('');           
+            $('#update_save_hour_return').append('<h5>' + partdesc + ' Saved</h5>');
+
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (savelaborcode === 0) {
+                savelabor();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+
+    };
+
+
+    var loadpartcode = 0;
+    function loadpartlistgarage() {
+        var theymme = '';
+        var token = $('#token').val();
+        var plate = $('#theplate').val();
+        var invoiceid = $('#invoiceid').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/repair/part/",
+            data: {
+                plate: plate,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            loadpartcode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            $('#part-price-list').html("</ br>");
+            $('#invoice-parts-list').html("</ br>");
+            $('#invoice-total-list').html("</ br>");
+			for (var i = 0; i < jsonData.length; ++i) {
+                
+                var theprice = parseInt(jsonData[i].partprice);
+                var thecount = parseInt(jsonData[i].partcount);
+                var thelinetotal = theprice * thecount;
+                totalpartprice = totalpartprice + thelinetotal;
+                var j = i + 1;
+                $('#invoice-parts-list').append('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+jsonData[i].linetotal+'</h3></div><div></div><div></div><div><h3>$'+jsonData[i].partprice+' x '  + jsonData[i].partcount + '</h3><p>'+jsonData[i].part+'</p><p> ' + jsonData[i].partcondition + '</p><p>'+jsonData[i].partnumber+'</p></div><div></div><div><h1><a href="https://chromemufflerbearing.com/api/remove/part/'+jsonData[i].plate+'/'+jsonData[i].timestamp+'?token='+token+'">X</a></h1></div></div>');
+            }
+
+            grandtotal = grandtotal + totalpartprice;
+            grandtotal = Math.round(grandtotal);
+
+            $('#invoice-hours-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totallaborprice+'</h3></div><div></div><div></div><div><h3>'+totallaborprice+'</h3><p>Labor Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-parts-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totalpartprice+'</h3></div><div></div><div></div><div><h3>'+totalpartprice+'</h3><p>Parts Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3>'+grandtotal+'</h3><p>Grand Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3><a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay</a></h3></div><div></div><div><h1>+</h1></div></div>');
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadpartcode === 0) {
+               loadpartlistgarage();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+
+    };
+
+
+    function loadlaborlistgarage() {
+        var theymme = '';
+        var plate = $('#theplate').val();
+        var token = $('#token').val();
+        var invoiceid = $('#invoiceid').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/repair/hour/",
+            data: {
+                plate: plate,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            loadlaborcode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            $('#labor-price-list').html('</ br>');
+            $('#invoice-hours-list').html("</ br>");
+            $('#invoice-total-list').html("</ br>");
+			for (var i = 0; i < jsonData.length; ++i) {
+                var theprice = parseFloat(jsonData[i].hourprice);
+                var thehours = parseFloat(jsonData[i].hours);
+                var linetotal = theprice * thehours;
+                totallaborprice = totallaborprice + linetotal;
+                var j = i + 1;
+                $('#invoice-hours-list').append('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+linetotal+'</h3></div><div></div><div></div><div><h3>'+jsonData[i].hours+' @ $' +jsonData[i].hourprice+'</h3><p>'+jsonData[i].desc+'</p><p>'+jsonData[i].techname+'</p></div><div></div><div><h1><a href="https://chromemufflerbearing.com/api/remove/hour/'+jsonData[i].plate+'/'+jsonData[i].timestamp+'?token='+token+'">X</a></h1></div></div>');
+
+            }
+
+            grandtotal = grandtotal + totallaborprice;
+            grandtotal = Math.round(grandtotal);
+            $('#invoice-hours-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totallaborprice+'</h3></div><div></div><div></div><div><h3>'+totallaborprice+'</h3><p>Labor Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-parts-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+totalpartprice+'</h3></div><div></div><div></div><div><h3>'+totalpartprice+'</h3><p>Parts Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3>'+grandtotal+'</h3><p>Grand Total</p></div><div></div><div><h1>+</h1></div></div>');
+            $('#invoice-grand-total').html('<div class="inspection-col-list paddingtop10 coloraccent"><div><h3>$'+grandtotal+'</h3></div><div></div><div></div><div><h3><a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay</a></h3></div><div></div><div><h1>+</h1></div></div>');
+            
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadlaborcode === 0) {
+               loadlaborlistgarage();
+            }
+        })
+        .always(function( xhr, status ) {
+            
+        });
+
+    };
+
+
+
+    
+
+    
+});
+
+</script>            
+  <style>            
+                 .inspection-col-list {
+                position: relative;
+                top:0%;
+                left:0%;
+                width:96%;
+                display: grid;
+                grid-template-columns:15% 5% 10% 40% 25% 5%;
+                grid-gap: 0px;
+                padding:2%;
+                height:100%;
+                margin-left:0%;
+                background-color:var(--coloraccent);
+            }
+            .inspection-col-list > div {
+                border-top-style:solid;
+                border-top-color:var(--colorprimary);
+                border-top-width: 3px;
+                padding: 0%;
+                margin-top:0%;
+                margin-left:0%;
+                font-size: 30px;
+                height:100%;
+            }
+            @media only screen and (max-width: 900px) {
+                .inspection-col-list {
+                    position: relative;
+                    top:0%;
+                    left:0%;
+                    width:96%;
+                    display: grid;
+                    grid-template-columns:10% 25% 8% auto;
+                    grid-gap: 0px;
+                    padding:2%;
+                    height:100%;
+                    margin-top:0%;
+                    margin-left:0%;
+                }
+                .inspection-col-list > div {
+                    border-top-style:solid;
+                    border-top-color:var(--colorprimary);
+                    border-top-width: 3px;
+                    padding: 0%;
+                    margin-top:0%;
+                    margin-left:0%;
+                    font-size: 30px;
+                    height:100%;
+                }
+            }
+    
+        </style>
+  <style>            
+        .sendmessage {
+            width:80%;
+            background-color:var(--coloraccent);
+            color:var(--colorprimary);
+            padding:12px 20px;
+            margin:8px 0;
+            box-sizing:border-box;
+            border-bottom-style: none;
+            border-bottom-width:2px;
+            border-left-style:none;
+            border-top-style:none;
+            border-right-style:none;
+            font-size:1.5em;
+            position: relative;
+        }
+        .sendmessage-form li {
+            list-style:none;
+            margin-bottom:5%;
+        }
+        .sendmessage-label {
+            width:10%;
+            left:0%;
+            position: relative;
+            color:#f1f1f1;
+        }
+        textarea:focus, input:focus{
+            outline: none;
+        }
+        *:focus {
+            outline: none;
+        }
+        .margin5 {
+            margin-top:10%;
+        }
+        button {
+            background-color:var(--colorprimary);
+            padding-left:2%;
+            padding-right:2%;
+            padding-top:1%;
+            padding-bottom:1%;
+            border:0;
+            box-shadow:none;
+            border-radius:0px;
+            margin-left:3%;
+            font-size:1.3em;
+        }
+        .invoice-form {
+            position:relative;
+            margin-left:10%;
+        }
+        </style> 
+
+        <div class="everything-wrapper" id="home_screen">
+                  <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div>
+                                <h2>Work Order / Invoice Builder</h2>
+                            </div>
+                            <div>
+                                <h3>The job is done, time to get PAID.</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="colorprimary">
+                            <div class="two-col-grid" id="invoice-details">
+
+                            </div>
+                        </div>
+                    <style>
+                    
+                    </style>
+                    <script>
+                    $(function(){
+                        $('#select-invoice').click(function(){
+                            $('#select-invoice').css('background-color', '#292929');
+                            $('#select-invoice').css('color', '#f1f1f1');
+                            $('#select-workorder').css('background-color', '#f1f1f1');
+                            $('#select-workorder').css('color', '#292929');
+                            $('#invoice_type').val('invoice');
+                        });
+                        $('#select-workorder').click(function(){
+                            $('#select-workorder').css('background-color', '#292929');
+                            $('#select-workorder').css('color', '#f1f1f1');
+                            $('#select-invoice').css('background-color', '#f1f1f1');
+                            $('#select-invoice').css('color', '#292929');
+                            $('#invoice_type').val('workorder');
+                        });                  
+                        $('#select-paid').click(function(){
+                            $('#select-paid').css('background-color', '#292929');
+                            $('#select-paid').css('color', '#f1f1f1');
+                            $('#select-unpaid').css('background-color', '#f1f1f1');
+                            $('#select-unpaid').css('color', '#292929');
+                            $('#invoice_status').val('paid');
+                        });
+                        $('#select-unpaid').click(function(){
+                            $('#select-unpaid').css('background-color', '#292929');
+                            $('#select-unpaid').css('color', '#f1f1f1');
+                            $('#select-paid').css('background-color', '#f1f1f1');
+                            $('#select-paid').css('color', '#292929');
+                            $('#invoice_status').val('unpaid');
+                        });             
+                        
+                        
+                        $('#select-reassemble-yes').click(function(){
+                            $('#select-reassemble-yes').css('background-color', '#292929');
+                            $('#select-reassemble-yes').css('color', '#f1f1f1');
+                            $('#select-reassemble-no').css('background-color', '#f1f1f1');
+                            $('#select-reassemble-no').css('color', '#292929');
+                            $('#is_norepair_cost').val('yes');
+                        });
+                        $('#select-reassemble-no').click(function(){
+                            $('#select-reassemble-no').css('background-color', '#292929');
+                            $('#select-reassemble-no').css('color', '#f1f1f1');
+                            $('#select-reassemble-yes').css('background-color', '#f1f1f1');
+                            $('#select-reassemble-yes').css('color', '#292929');
+                            $('#is_norepair_cost').val('no');
+                        });      
+
+
+                    });
+                    </script>
+                    <style>
+                    .invoicetype {
+                        position:relative;
+                        padding:3%;
+                        width:auto;
+                    }
+                    </style>
+
+                    <div class="colorprimary">
+                            <div class="two-col-grid">
+                                <div>
+                                    <h3>Customer Name</h3>
+                                </div>
+                                <div>
+                                    <input type="text" class="marginleft5 sendmessage" id="invoice_customer_name" name="invoice_customer_name" placeholder="Customer Name" />
+                                </div>
+                                <div>
+                                    <h3>License Plate</h3>
+                                </div>
+                                <div>
+                                    <input type="text" class="marginleft5 sendmessage" id="invoice_registration_number" name="invoice_registration_number" placeholder="License Plate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="colorprimary">
+                            <div class="two-col-grid">
+                                <div>
+                                    <h3 class="invoicetype cursor" id="select-invoice">INVOICE</h3>
+                                    <h3 class="invoicetype cursor" id="select-workorder">WORK ORDER</h3>                                    
+                                    <input type="hidden" id="invoice_type" name="invoice_type" value="invoice">
+                                </div>
+                                <div>
+                                    <h3 class="invoicetype cursor" id="select-paid">PAID</h3>
+                                    <h3 class="invoicetype cursor" id="select-unpaid">UNPAID</h3>  
+                                    <input type="hidden" id="invoice_status" name="invoice_status">
+                                </div>    
+                                <div>
+                                    <h3>Expected Completion Date</h3>
+                                </div>
+                                <div>
+                                    <span id="container"></span>
+                                    <label for="input_date" class="save-button">Pick a date.</label>
+                                    <input id="input_date" class="datepicker" name="date" type="text" style="color:var(--coloraccent);" value="20 March, 2020" data-value="2020-03-20"/> 
+                                </div>
+                                <div>
+                                    <h3>Includes cost of reassembly w/o repair?</h3>
+                                </div>
+                                <div>
+
+                                        <div><h3 class="invoicetype cursor" id="select-reassemble-yes">YES</h3></div>
+                                        <div><h3 class="invoicetype cursor" id="select-reassemble-no">NO</h3></div>
+                                        <input type="hidden" id="is_norepair_cost" name="is_norepair_cost" value="no"/>
+                                </div>
+                                </div></div>
+                        <div class="colorprimary margin5">
+                            <div class="two-col-grid">
+                                <div>
+                                    <h3>Invoice Prepared By</h3>
+                                </div>
+                                <div>
+                                    <input type="text" class="marginleft5 sendmessage" id="invoice_signature" name="invoice_signature" placeholder="Sign Here">
+                                </div>
+                                <div>
+                                    <h3>Odometer</h3>
+                                </div>
+                                <div>
+                                    <input type="text" class="marginleft5 sendmessage" id="invoice_odometer" name="invoice_odometer" placeholder="Odometer">
+                                </div>
+                                <div>
+                                    <h3>Vehicle Year+Make</h3>
+                                </div>
+                                <div>
+                                    <input type="text" class="marginleft5 sendmessage" id="invoice_yearmake" name="invoice_yearmake" placeholder="Odometer">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="colorprimary">
+                                <div class="one-col-grid">
+                                    <div>
+                                        <textarea class='autoExpand sendmessage' rows='5' data-min-rows='5' id="invoice_note" name="invoice_note" placeholder="work description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="one-col-grid">
+                                    <div>
+                                        <textarea class='autoExpand sendmessage' rows='5' data-min-rows='5' id="invoice_address" name="invoice_address" placeholder="Customer Address"></textarea>
+                                    </div>
+                                    <div>
+                                        <button class="coloraccent big-button" id="update_invoice_note">SAVE</button>
+                                    </div>
+                                    <div id="update_invoice_note_return">
+
+                                    </div>
+                                </div>
+
+                            </div> 
+
+                    <div class="invoice-form">
+                            <form action="#" class="sendmessage-form">
+                                <input type="text" class="marginleft5 sendmessage" id="part_desc" name="part_desc" placeholder="part name">
+                                <input type="text" class="marginleft5 sendmessage" id="part_number" name="part_number" placeholder="part number">
+                                <input type="text" class="marginleft5 sendmessage" id="part_condition" name="part_condition" placeholder="part condition">
+                                
+                                
+                                <input type="text" class="marginleft5 sendmessage" id="part_count" name="part_count" placeholder="quantity">
+                                    <input type="text" class="marginleft5 sendmessage" id="part_price" name="part_price" placeholder="price">
+                                   <input type="hidden" class="carymme" id="part_invoice_id" name="part_invoice_id">
+                                <h1 class="save-button" id="save_price_row">SAVE</h1>
+                                <h3 id="save-vehicle-return-status"></h3>
+                                </form>
+                                <div id="update_save_part_return">
+
+                                </div>
+                    </div>
+    
+                    <div class="invoice-form">
+                    <form action="#" class="sendmessage-form">
+                        <input type="text" class="sendmessage" id="labor_tech_name" name="labor_tech_name" placeholder="mechanic's name">
+                        <input type="text" class="sendmessage" id="hour_desc" name="hour_desc" placeholder="labor description">
+                        <input type="text" class="sendmessage" id="hour_time" name="hour_time" placeholder="labor hours">
+                        <input type="text" class="sendmessage" id="hour_price" name="hour_price" placeholder="labor hourly price">
+                
+                <input type="hidden" class="sendmessage" id="hour_invoice_id" name="hour_invoice_id">
+                            <h1 class="save-button" id="save_labor_row">SAVE</h1>
+                            <h3 id="save-vehicle-return-status"></h3>                            
+                </form>
+                <div id="update_save_part_return">
+
+                </div>
+                <div class="invoice-form"></div>
+                    <div class="colorprimary" id="invoice-parts-list"></div>
+                    <div class="coloraccent" id="invoice-parts-total"></div>
+                    <div class="colorprimary" id="invoice-hours-list"></div>
+                    <div class="coloraccent" id="invoice-hours-total"></div>
+                    <div class="coloraccent" id="invoice-grand-total"></div>
+                </div>     
+                <div class="colorprimary" id="attach_terms">
+                    <div class="two-col-grid">
+                        <div>
+                            <h1>Attach Terms:</h1>
+                        </div>
+                        <div id="terms-list">
+
+                        </div>
+                        <div id="attach-terms-return"></div>
+                    </div>
+                </div>
+                <div class="colorprimary" id="attached_terms">
+                    <div class="two-col-grid">
+                        <div>
+                            <h1>Already Attached Terms:</h1>
+                        </div>
+                        <div id="attached-terms-list">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="colorprimary" id="approval_log">
+                    <div class="two-col-grid">
+                        <div>
+                            <h1>Approval Status:</h1>
+                        </div>
+                        <div id="approved-log">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="colorprimary" id="update_donedate">
+                    <div class="two-col-grid">
+                        <div>
+                            <h1>Update Expected Done Date:</h1>
+                        </div>
+                        <div id="update_done_date_log">
+                            <span id="container2"></span>
+                            <label for="input_date2" class="save-button">Pick a date.</label>
+                            <input id="input_date2" class="datepicker2" name="date2" type="text" style="color:var(--coloraccent);" value="15 March, 2020" data-value="2020-03-20"/>                        
+                            <button class="big-button" id="update_done_date">Update</button>
+                            <span id="update_confirm_status"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="colorprimary" id="donedate_log">
+                    <div class="two-col-grid">
+                        <div>
+                            <h3>PROMISED DONE DATE LOG:</h3>
+                        </div>
+                        <div id="donedate_updates">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="colorprimary" id="is_approval">
+                    <div class="two-col-grid">
+                        <div>
+                            <h1>Approval</h1>
+                        </div>
+                        <div>
+                            
+                            <h3>PHONE APPROVAL</h3>
+                            <h3 class="invoicetype cursor" id="select-approval-yes">YES</h3>
+                            <h3 class="invoicetype cursor" id="select-approval-no">NO</h3>
+                            <input type="hidden" name="approvalstatus" id="approvalstatus" value=""/>   
+                            <input type="hidden" name="approvalid" id="approvalid" value=""/>   
+                            <input type="text" class="marginleft5 sendmessage" id="approval_signature" name="approval_signature" placeholder="Spoke With">
+                            <input type="text" class="marginleft5 sendmessage" id="approval_number" name="approval_number" placeholder="Phone Number">
+                            <input type="text" class="marginleft5 sendmessage" id="approval_admin_name" name="approval_admin_name" placeholder="Admin Name">
+
+                            <button class="coloraccent big-button" id="submit_approval">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coloraccent">
+                    <div class="two-col-grid">
+                        <div>
+                            <button class="colorprimary big-button" id="save-invoice">Finalize Invoice</button>
+                        </div>
+                        <div>
+                            <h3>This step saves a "hard copy" that can be printed.</h3>
+                            <span id="invoiceout"></span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <script>
+
+                    $(function(){ 
+                        $('#update_done_date').click(function(){
+                            
+                            updatedonedate();
+                        });
+                        $('#submit_approval').click(function(){
+                            var approvalsignature = $('#approval_signature').val();
+                            if (approvalsignature.length > 4) {
+                                submitapproval();                    
+                            } else {
+                                animateCSS('#home_screen', 'slideOutRight', function() {
+                                    $('#home_screen').css('display', 'none');
+                                    $('#error_screen').css('display', 'grid');
+                                    animateCSS('#error_screen', 'slideInRight', function() {
+
+                                    });
+                                });
+                            }
+                        });
+
+                        $('#error_go_back').click(function(){
+                            animateCSS('#error_screen', 'slideOutRight', function() {
+                                $('#error_screen').css('display', 'none');
+                                $('#home_screen').css('display', 'grid');
+                                animateCSS('#home_screen', 'slideInRight', function() {
+
+                                });
+                            });
+                        });
+
+                        $('#select-approval-yes').click(function(){
+                            $('#select-approval-yes').css('background-color', '#292929');
+                            $('#select-approval-yes').css('color', '#f1f1f1');
+                            $('#select-approval-no').css('background-color', '#f1f1f1');
+                            $('#select-approval-no').css('color', '#292929');
+                            $('#approvalstatus').val('yes');
+                        });
+                        $('#select-approval-no').click(function(){
+                            $('#select-approval-no').css('background-color', '#292929');
+                            $('#select-approval-no').css('color', '#f1f1f1');
+                            $('#select-approval-yes').css('background-color', '#f1f1f1');
+                            $('#select-approval-yes').css('color', '#292929');
+                            $('#approvalstatus').val('no');
+                        });      
+                    });
+
+
+              
+
+
+
+
+                var loadtermslistcode = 0;
+                function loadtermslist() {
+                    var token = $('#token').val();
+                    var plate = $('#theplate').val();
+                    var invoiceid = $('#invoiceid').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/api/view/terms/list",
+                        data: {
+                            token: token,
+                            plate: plate,
+                            invoiceid: invoiceid
+                        }
+                    })
+                    .done(function( data ) {
+                        loadtermslistcode = 1;
+
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        
+                        for (var i = 0; i < jsonData.length; ++i) {
+                            $('#terms-list').append('<button class="colorprimary little-button" onclick="addterms(\''+jsonData[i].termsid+'\');">' + jsonData[i].termstitle + '</button>');
+                        }
+                        loadattachedtermslist()
+                    
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (loadtermslistcode === 0) {
+                            loadtermslist();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+                };
+
+                var addtermscode = 0;
+                function addterms(id) {
+                                
+                    var plate = $('#theplate').val();
+                    var vehicleid = $('#vehicleid').val();
+                    var token = $('#token').val();
+                    var invoiceid = $('#invoiceid').val();
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/api/view/terms/list",
+                                data: {
+                                    token:token
+                                }
+                            })
+                            .done(function( data ) {
+                                loadavaliablewaiverlistcode = 1;
+                             
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "https://chromemufflerbearing.com/api/attach/terms/to/invoice",
+                                        data: {
+                                            token:token,
+                                            plate: plate,
+                                            vehicleid: vehicleid,
+                                            termsid: id,
+                                            termstext: jsonData[i].termstext,
+                                            termstitle: jsonData[i].termstitle,
+                                            invoiceid: invoiceid,
+                                            approvalstatus: 'unanswered',
+                                            approvalsignature: 'unsigned'
+                                        }
+                                    })
+                                    .done(function( data ) {
+                                        addwaivercode = 1;
+                                       
+                                        $('#attach-terms-return').append('<h3>' + jsonData[i].termstitle + ' Attached </h3>')
+                                        $('#attached-terms-list').append('<h3>' + jsonData[i].termstitle + '</h3>');
+                                        $('#attached-terms-list').append('<p>' + jsonData[i].termstext + '</p>');
+                                        
+                                    })
+                                    .fail(function( xhr, status, errorThrown ) {
+                                        if (addwaivercode === 0) {
+                                            addwaiver(id, waivertext);
+                                        }
+                                    })
+                                    .always(function( xhr, status ) {
+
+                                    });
+
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadavaliablewaiverlistcode === 0) {
+                                    loadavaliablewaiverlist();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+
+                        };
+
+
+                var loadattachedtermslistcode = 0;
+                function loadattachedtermslist() {
+                    var token = $('#token').val();
+                    var plate = $('#theplate').val();
+                    var invoiceid = $('#invoiceid').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/api/view/terms/by/invoice",
+                        data: {
+                            token: token,
+                            plate: plate,
+                            invoiceid: invoiceid
+                        }
+                    })
+                    .done(function( data ) {
+                        loadattachedtermslistcode = 1;
+
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        
+                        for (var i = 0; i < jsonData.length; ++i) {
+                            $('#attached-terms-list').append('<h3>' + jsonData[i].termstitle + '</h3>');
+                            $('#attached-terms-list').append('<p>' + jsonData[i].termstext + '</p>');
+                        }
+
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (loadattachedtermslistcode === 0) {
+                            loadattachedtermslist();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+                };
+
+
+                var loadexpecteddatelistcode = 0;
+                function loadexpecteddatelist() {
+                    var plate = $('#theplate').val();
+                    var invoiceid = $('#invoiceid').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/view/expected/date/list",
+                        data: {
+                            plate: plate,
+                            invoiceid: invoiceid
+                        }
+                    })
+                    .done(function( data ) {
+                        loadexpecteddatelistcode = 1;
+
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        
+                        for (var i = 0; i < jsonData.length; ++i) {           
+                            $('#donedate_updates').append('<h5>[' + i + ']: ' + jsonData[i].donedate + '</h5>');
+                        }
+                        loadtermslist();
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (loadexpecteddatelistcode === 0) {
+                            loadexpecteddatelist();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+                };
+
+
+
+                var updatedonedatecode = 0;
+                function updatedonedate() {
+                    var token = $('#token').val();
+                    var plate = $('#theplate').val();
+                    var invoiceid = $('#invoiceid').val();
+                    var vehicleid = $('#vehicleid').val();
+                    var donedate = $('#input_date2').val();
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/api/save/expected/date",
+                        data: {
+                            token: token,
+                            plate: plate,
+                            vehicleid: vehicleid,
+                            invoiceid: invoiceid,
+                            donedate: donedate
+                        }
+                    })
+                    .done(function( data ) {
+                        updatedonedatecode = 1;
+
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        
+                        for (var i = 0; i < jsonData.length; ++i) {           
+
+                        }
+                        $('#update_confirm_status').append('<h3>Updated: ' + donedate + '</h3>');
+
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (updatedonedatecode === 0) {
+                            updatedonedate();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+                };
+
+                var loadapprovalcode = 0;
+                function loadapproval() {
+                    var plate = $('#theplate').val();
+                    var invoiceid = $('#invoiceid').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/view/invoice/approval",
+                        data: {
+                            plate: plate,
+                            invoiceid: invoiceid
+                        }
+                    })
+                    .done(function( data ) {
+                        loadapprovalcode = 1;
+
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        
+                        for (var i = 0; i < jsonData.length; ++i) {           
+                            $('#approved-log').append('<h4>ANSWERED: "' + jsonData[i].approvalstatus + '" signed ' + jsonData[i].approvalsignature + '</h4><p>Recorded at: ' + jsonData[i].nicetime + ' UTC (UTC -7 hours = MST) </p>');
+                        }
+                        loadexpecteddatelist();
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (loadapprovalcode === 0) {
+                            loadapproval();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+                };
+
+
+                var submitapprovalcode = 0;
+                    function submitapproval() {
+                        var theymme = '';
+                        var plate = $('#theplate').val();
+                        var invoiceid = $('#invoiceid').val();
+                        var vehicleid = $('#vehicleid').val();
+                        var approvalstatus = $('#approvalstatus').val();
+                        var approvalsignature = $('#approval_signature').val();
+                        var approvaladminname = $('#approval_admin_name').val();
+                        var approvalnumber = $('#approval_number').val();
+
+                        var approvalphoneauth = 'Spoke with ' + approvalsignature + ' Phone Number: ' + approvalnumber + ' Employee: ' + approvaladminname; 
+                        $.ajax({
+                            type: "POST",
+                            url: "https://chromemufflerbearing.com/save/invoice/approval/",
+                            data: {
+                                plate: plate,
+                                invoiceid: invoiceid,
+                                vehicleid: vehicleid,
+                                approvalstatus: approvalstatus,
+                                approvalsignature: approvalphoneauth,
+                                approvedvia: 'phone'
+                            }
+                        })
+                        .done(function( data ) {
+                            submitapprovalcode = 1;
+                            var jsonStr = JSON.stringify(data);
+                            var jsonData = JSON.parse(jsonStr);
+                            var timestamp = 0;
+                            for (var i = 0; i < jsonData.length; ++i) {
+                            
+                            }
+                            if (approvalstatus === 'yes') {
+                                animateCSS('#home_screen', 'slideOutRight', function() {
+                                    $('#home_screen').css('display', 'none');
+                                    $('#next_screen').css('display', 'grid');
+                                    animateCSS('#next_screen', 'slideInRight', function() {
+                                    });
+                                });
+                            } else {
+                                animateCSS('#home_screen', 'slideOutRight', function() {
+                                    $('#home_screen').css('display', 'none');
+                                    $('#stop_work_screen').css('display', 'grid');
+                                    animateCSS('#stop_work_screen', 'slideInRight', function() {
+
+                                    });
+                                });
+
+                            }
+                        })
+                        .fail(function( xhr, status, errorThrown ) {
+                            if (submitapprovalcode === 0) {
+                                submitapproval();
+                            }
+                        })
+                        .always(function( xhr, status ) {
+
+                        });
+
+                    };                    
+                </script>
+
+
+
+
+        </div> <!--end home_screen -->
+
+        <div class="everything-wrapper" id="next_screen">
+            <div class="colorprimary">
+                <div class="two-col-grid">
+                    <div>
+                        <h1>What's Next?</h1>
+                    </div>
+                    <div>
+                        <h3>You Answered: "YES"</h3>
+                        <h3></h3>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="everything-wrapper" id="stop_work_screen">
+            <div class="colorprimary">
+                <div class="two-col-grid">
+                    <div>
+                        <h1>What's Next?</h1>
+                    </div>
+                    <div>
+                        <h3>You Answered: "NO"</h3>
+                        <h3>CALL US IMMEDIATELY</h3>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="everything-wrapper" id="error_screen">
+            <div class="colorprimary">
+                <div class="two-col-grid">
+                    <div>
+                        <h1>ERROR</h1>
+                    </div>
+                    <div>
+                        <h3>Please enter your full name to E-Sign this document. We need your signature to document if you approve the work order or not. Thanks.</h3>
+                        <h3 id="error_go_back"><- BACK </h3>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function(){
+                var plate = $('#theplate').val();
+                $('#sendtext_number').val(plate);
+                var invoiceid = $('#invoiceid').val();
+                $('#sendtext_message').val('Your invoice is here: https://chromemufflerbearing.com/c/bill/' + plate + '/' + invoiceid + ' ');
+
+                $('#sendtext_go').click(function(){
+                    send1();
+                });
+            });
+
+            function send1() {
+                var send1code = 0;
+                var plate = $('#theplate').val();
+                    var token = $('#token').val();
+                    var sendto = $('#sendtext_number').val();
+                    var sendwhat = $('#sendtext_message').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/api/send1",
+                        data: {
+                            token: token,
+                            plate: plate,
+                            sendto: sendto,
+                            sendwhat: sendwhat
+                        }
+                    })
+                    .done(function( data ) {
+                        send1code = 1;
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        for (var i = 0; i < jsonData.length; ++i) {
+
+                        }
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (send1code === 0) {
+                            send1();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+            };
+
+        </script>
+
+        <div class="everything-wrapper coloraccent" id="sendtext_screen">
+            <div class="coloraccent" id="close-sendtext-screen">
+            <div class="two-col-grid">
+                <div><h1 class="save-button"> <- Back </h1></div>
+                <div></div>
+            </div>
+            </div>
+            <div class="coloraccent two-col-grid">
+                <div>
+                    <input type="text" id="sendtext_number" name="sendtext_number">
+                </div>
+                <div>
+                    
+                </div>
+                
+            </div>
+            <div class="colorprimary one-col-grid">
+                <div>
+                    <textarea class='autoExpand sendmessage colorprimary' rows='5' data-min-rows='5' id="sendtext_message" name="sendtext_message" placeholder="Message"></textarea>
+                </div>
+                <div>
+                    <button class="colorprimary big-button" id="sendtext_go">SEND</button>
+                </div>
+                <div class="colorprimary" id="addpart-status"></div>
+            </div>
+            
+        </div>        
+
+        <button class="menu-button" id="open-menu">
+            =
+        </button>
+        <button class="menu-button" id="close-menu">
+            X
+        </button>    
+
+</div><!-- main_content_wrapper-->
+
+
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.js"></script>
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.date.js"></script>
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.time.js"></script>    
+<script src="https://chromemufflerbearing.com/scripts/pdate/legacy.js"></script>
+
+<script type="text/javascript">
+
+    var $input = $( '.datepicker' ).pickadate({
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy-mm-dd',
+        container: '#container',
+        closeOnSelect: true,
+        closeOnClear: false,
+        labelMonthNext: 'Go to the next month',
+        labelMonthPrev: 'Go to the previous month',
+        labelMonthSelect: 'Pick a month from the dropdown',
+        labelYearSelect: 'Pick a year from the dropdown',
+        selectMonths: true,
+        selectYears: true,
+        selectYears: 4,
+        min: new Date(1970,3,20)
+    });
+ var picker = $input.pickadate('picker');
+    picker.set('select', '', { format: 'yyyy-mm-dd' });
+
+   
+    var $input = $( '.datepicker2' ).pickadate({
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy-mm-dd',
+        container: '#container2',
+        closeOnSelect: true,
+        closeOnClear: false,
+        labelMonthNext: 'Go to the next month',
+        labelMonthPrev: 'Go to the previous month',
+        labelMonthSelect: 'Pick a month from the dropdown',
+        labelYearSelect: 'Pick a year from the dropdown',
+        selectMonths: true,
+        selectYears: true,
+        selectYears: 4,
+        min: new Date(1970,3,20)
+    });
+ var picker2 = $input.pickadate('picker2');
+    picker2.set('select', '', { format: 'yyyy-mm-dd' });
+
+
+</script>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<div>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+
+    </style>
+
+    </head>
+    <body>
+    <div id="main_content_wrapper">            
+            <div class="left-gutter" id="left-gutter">
+                    <div class="far-left">
+                        <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+                    </div>
+                    <div class="mid-left">
+                        <div id="mid-left-panel-home">
+                            <div class="mid-left-panel-wrapper-load margin-left-panel">
+                                <h2 id="vehicle-info-ymme"></h2>
+                                <div id="go-home"></div>                
+                            </div>
+                        </div>
+                        <div id="mid-left-panel-inspection">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h4>Select an inspection</h4>
+                                    <div class="nav-list-wrapper" id="inspection-list">                                    
+                                    </div>
+                                </div>
+                        </div>
+                        <div id="mid-left-panel-message">
+                                <div class="mid-left-panel-wrapper-load margin-left-panel" id="message-left-panel">
+                                    <div id="pagelist"></div>
+                                    <div id="go-message"></div>
+                                </div>
+                            </div>
+                        <div id="mid-left-panel-invoice">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h2>Select an Invoice</h2>
+                                    <div id="invoice-total-list"></div>
+                                    <div id="pagelist">
+    
+                                    </div>
+                                </div>
+                        </div>
+    
+            
+                    </div>
+                </div>
+
+<script>
+
+   $(function() {
+            loadpartlistgarage();
+            loadlaborlistgarage();
+        })
+     var savepartrowcode = 0;
+    var grandtotal = 0;
+    var totalpartprice = 0;
+    var totallaborprice = 0;
+
+    var loadpartcode = 0;
+    function loadpartlistgarage() {
+        var theymme = '';
+        var token = $('#token').val();
+        var plate = $('#theplate').val();
+        var invoiceid = $('#invoiceid').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/repair/part/",
+            data: {
+                plate: plate,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            loadpartcode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+           
+            for (var i = 0; i < jsonData.length; ++i) {
+                var theprice = parseInt(jsonData[i].partprice);
+                var thecount = parseInt(jsonData[i].partcount);
+                var thelinetotal = theprice * thecount;
+                var linetotal = parseInt(jsonData[i].linetotal);
+                totalpartprice = totalpartprice + linetotal;
+
+                var j = i + 1;
+                $('#invoice-parts-list').append('<div class="two-col-grid"><div ><h2>'+jsonData[i].part+'</h2></div><div ><h4>$'+jsonData[i].partprice+' x ' +jsonData[i].partcount+' = $' + jsonData[i].linetotal +'</h4></div></div>');
+
+            }
+
+            grandtotal = grandtotal + totalpartprice;
+            grandtotal = Math.round(grandtotal);
+
+            $('#invoice-hours-total').html('<div class="two-col-grid"><div ><h2>Sub Total Labor</h2></div><div ><h4>$'+totallaborprice+'</h4></div></div>');
+            $('#invoice-parts-total').html('<div class="two-col-grid"><div ><h2>Sub Total Parts</h2></div><div ><h4>$'+totalpartprice+'</h4></div></div>');
+            $('#invoice-grand-total').html('<div class="two-col-grid"><div ><h2>Total</h2></div><div ><h4>$'+grandtotal+'</h4></div></div>');
+            $('#pay-bill-holder').html('<a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay $' + grandtotal + '</a>');
+
+            
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadpartcode === 0) {
+               loadpartlistgarage();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+
+    };
+
+
+
+
+    function loadlaborlistgarage() {
+        var theymme = '';
+        var plate = $('#theplate').val();
+        var token = $('#token').val();
+        var invoiceid = $('#invoiceid').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/repair/hour/",
+            data: {
+                plate: plate,
+                invoiceid: invoiceid
+            }
+        })
+        .done(function( data ) {
+            loadlaborcode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+        	for (var i = 0; i < jsonData.length; ++i) {
+                var theprice = parseFloat(jsonData[i].hourprice);
+                var thehours = parseFloat(jsonData[i].hours);
+                var thelinetotal = theprice * thehours;
+                var linetotal = parseFloat(jsonData[i].linetotal);
+                totallaborprice = totallaborprice + linetotal;
+
+                var j = i + 1;
+                $('#invoice-hours-list').append('<div ><h2>'+jsonData[i].desc+'</h2></div><div><h4>'+jsonData[i].hours+' @ $' + jsonData[i].hourprice+' = $'+jsonData[i].linetotal+'</h4</div>');
+
+            }
+
+            grandtotal = grandtotal + totallaborprice;
+            grandtotal = Math.round(grandtotal);
+            $('#invoice-hours-total').html('<div class="two-col-grid"><div><h2>Sub Total Labor</h2></div><div><h4>$'+totallaborprice+'</h4></div></div>');
+            $('#invoice-parts-total').html('<div class="two-col-grid"><div><h2>Sub Total Parts</h2></div><div><h4>$'+totalpartprice+'</h4></div></div>');
+            $('#invoice-grand-total').html('<div class="two-col-grid"><div><h2>Total</h2></div><div><h4>$'+grandtotal+'</h4></div></div>');
+            $('#pay-bill-holder').html('<a href="https://chromemufflerbearing.com/paybill/'+grandtotal+'00/'+invoiceid+'">Pay $' + grandtotal + '</a>');
+
+            
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadlaborcode === 0) {
+               loadlaborlistgarage();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+
+    };
+
+    
+
+</script>            
+
+
+
+        <div class="everything-wrapper" id="home_screen">
+                  <div class="colorprimary">
+                        <div class="two-col-grid">
+                            <div>
+                                <h1>Invoice</h1>
+                            </div>
+                            <div>
+                                <h4>Use this link to pay your bill online.</h4>
+                                <h4><span id="pay-bill-holder"></span></h4>
+                                <p>We use Stripe for card transactions. Your info never touches our web server and we do not save it, Stripe processes it for us <a href="https://stripe.com">Read More at Stripe.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="colorprimary" id="invoice-parts-list">
+                        
+                    </div>
+                    <div class="colorprimary" id="invoice-parts-total"></div>
+                    <div class="colorprimary" id="invoice-hours-list"></div>
+                    <div class="colorprimary two-col-grid" id="invoice-hours-total"></div>
+                    <div class="colorprimary" id="invoice-grand-total"></div>
+
+  
+                  
+        </div> <!--end home_screen -->
+        <button class="menu-button" id="open-menu">
+            =
+        </button>
+        <button class="menu-button" id="close-menu">
+            X
+        </button>    
+
+</div><!-- main_content_wrapper-->
+
+
+<input type="hidden" name="invoiceid" id="invoiceid" value="2020011810501281" /><input type="hidden" name="vehicleid" id="vehicleid" value="202001181037" /><input type="hidden" name="theplate" id="theplate" value="3038889999" /></body>

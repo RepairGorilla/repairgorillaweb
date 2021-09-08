@@ -1,0 +1,23 @@
+{
+    "name": "repairgorilla.com",
+    "main": "server.js",
+    "dependencies": {
+      "body-parser": "~1.18.2",
+      "express": "^4.16.2",
+      "jimp": "0.8.5",
+      "jsonwebtoken": "8.1.0",
+      "md5": "2.2.1",
+      "method-override": "~2.3.10",
+      "mongoose": "~4.13.8",
+      "morgan": "~1.9.0",
+      "multer": "~0.1.6",
+      "showdown":"1.9.1",
+      "moment": "2.19.1",
+      "sendgrid": "^1.9.2",
+      "stripe": "^4.15.0",
+      "pdfkit": "^0.11.0",
+      "html-pdf": "^2.2.0",
+      "twilio": "^3.11.0"
+    }
+  }
+  

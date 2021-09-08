@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<div>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+    <script src="https://chromemufflerbearing.com/mechanic/mechanic-startnew.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <script src="https://chromemufflerbearing.com/mechanic/garage-inspection-panel.js"></script>
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+ 
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">    
+    <script src="https://chromemufflerbearing.com/moment.js"></script>
+    <style>
+        #save_rename_chat_image {
+            display:none;
+        }
+        .padding2 {
+            padding:2%;
+        }
+        .inspection-panel {
+            position:relative;
+            margin-top:5%;
+        }
+        #modify_partlist_screen, #sendtext_screen {
+            display:none;
+        }
+
+    </style>
+
+
+    </head>
+    >
+
+    <style>
+       
+        
+    </style>
+    <div id="main_content_wrapper">
+        <div class="left-gutter" id="left-gutter">
+            <div class="far-left">
+                <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+            </div>
+            <div class="mid-left">
+                <div id="mid-left-panel-home">
+                    <div class="mid-left-panel-wrapper-load margin-left-panel">
+                        <h2 id="vehicle-info-ymme"></h2>
+                        <div id="go-customer-view"></div>
+                        <div id="go-back-home"></div>
+                        <div id="go-admin-home"></div>
+                        <div id="open-partlist-screen"><h4 class="colorprimary big-button  marginleft5">Add Part</h4></div>
+                        <div id="open-sendtext-screen"><h4 class="colorprimary big-button margin5 marginleft5">Inspection Text</h4></div>
+                    </div>
+                </div>
+                <div id="mid-left-panel-inspection">
+                        <div class="mid-left-panel-wrapper-load">
+                            <h4 class="colorprimary big-button margin5 marginleft5" id="start_new_inspection">New Inspection</h4>
+                                <h4>Select an inspection</h4>
+                                <div class="nav-list-wrapper" id="inspection-list"></div>
+                        </div>
+                </div>
+
+                <div id="mid-left-panel-message">
+                        <div class="mid-left-panel-wrapper-load" id="message-left-panel">
+                            <h1></h1>
+                            <div id="pagelist"></div>
+                        </div>
+                </div>
+                <div id="mid-left-panel-invoice">
+                        <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                            <h4 class="colorprimary big-button margin5 marginleft5" id="start_new_invoice">New Invoice</h4>
+                            <h2>Select an Invoice</h2>
+                            <div id="pagelist">
+                            </div>
+                            <div id="invoice-total-list"></div>
+                        </div>
+                </div>
+
+    
+            </div>
+    </div><!--end left gutter-->          
+  <style>            
+        .sendmessage {
+            width:80%;
+            background-color:var(--coloraccent);
+            color:var(--colorprimary);
+            padding:12px 20px;
+            margin:8px 0;
+            box-sizing:border-box;
+            border-bottom-style: none;
+            border-bottom-width:2px;
+            border-left-style:none;
+            border-top-style:none;
+            border-right-style:none;
+            font-size:1.5em;
+            position: relative;
+        }
+        .sendmessage-form li {
+            list-style:none;
+            margin-bottom:5%;
+        }
+        .sendmessage-label {
+            width:10%;
+            left:0%;
+            position: relative;
+            color:#f1f1f1;
+        }
+        textarea:focus, input:focus{
+            outline: none;
+        }
+        *:focus {
+            outline: none;
+        }
+        .margin5 {
+            margin-top:10%;
+        }
+        button {
+            background-color:var(--colorprimary);
+            padding-left:2%;
+            padding-right:2%;
+            padding-top:1%;
+            padding-bottom:1%;
+            border:0;
+            box-shadow:none;
+            border-radius:0px;
+            margin-left:3%;
+            font-size:1.3em;
+        }
+        </style>
+
+
+        <div class="everything-wrapper" id="home_screen">
+                  <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div>
+                                <h1>Inspection Results</h1>
+                            </div>
+                            <div>
+                                <h3>The results are in, here's what we found</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="colorprimary">
+                            <div class="two-col-grid">
+                                <div class="two-col-border">
+                                    <h2>Part</h2>
+                                    <h3>Image</h3>
+                                </div>
+                                <div class="two-col-border">
+                                    <h3>GREEN YELLOW RED</h3>
+                                    <h3>Note</h3>
+                                </div>
+                            </div>
+                    </div>
+
+                 
+                    <div class="colorprimary" id="inspection-part-list">
+                            
+                    </div>
+                    <div id="list-inspection-parts"></div>
+                    <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div id="remove_inspection"> 
+                                <h1>Delete Inspection</h1>
+                            </div>
+                            <div>
+                                <h3>This can't be undone. Delete is delete.</h3>
+                            </div>
+                        </div>
+                    </div>
+        </div> <!--end home_screen -->
+
+        <script>
+            
+        
+        </script>
+        <input type="hidden" id="selected_partid" name="selected_partid" value="0" />
+        <div class="everything-wrapper coloraccent" id="sendtext_screen">
+            <div class="coloraccent" id="close-sendtext-screen">
+            <div class="two-col-grid">
+                <div><h1 class="save-button"> <- Back </h1></div>
+                <div></div>
+            </div>
+            </div>
+            <div class="coloraccent two-col-grid">
+                <div>
+                    <input type="text" id="sendtext_number" name="sendtext_number">
+                </div>
+                <div>
+                  
+                </div>
+                
+            </div>
+            <div class="colorprimary one-col-grid">
+                <div>
+                    <textarea class='autoExpand sendmessage colorprimary' rows='5' data-min-rows='5' id="sendtext_message" name="sendtext_message" placeholder="Customer Address"></textarea>
+                </div>
+                <div>
+                    <button class="colorprimary big-button" id="sendtext_go">SEND</button>
+                </div>
+                <div class="colorprimary" id="addpart-status"></div>
+            </div>
+            
+        </div>
+        <div class="everything-wrapper coloraccent" id="modify_partlist_screen">
+            <div class="coloraccent" id="close-partlist-screen">
+            <div class="two-col-grid">
+                <div><h1 class="save-button"> <- Back </h1></div>
+                <div></div>
+            </div>
+            </div>
+            <div class="coloraccent two-col-grid">
+                <div>
+                    <h3>Part Name</h3>
+                    <input type="text" id="part_to_add" name="part_to_add">
+                </div>
+                <div>
+                    <h3>Part List</h3>
+                    <input type="text" id="part_list" name="part_list">
+                </div>
+                <div>
+                    <button class="colorprimary big-button" id="addpart">NEXT</button>
+                    <div class="colorprimary" id="addpart-status"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="everything-wrapper coloraccent" id="screen_settings">
+            <div class="coloraccent" id="close-inspection-note">
+                <div class="two-col-grid">
+                    <div><h1 class="save-button"> <- Back </h1></div>
+                    <div></div>
+                </div>
+                
+            </div>
+
+            <script>
+            
+            
+            </script>
+            <div class="coloraccent" id="upload-container">
+                <span id="inspected-part-description"></span>
+                    <form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form>
+                    <span class="texta-wrapper">
+                            <h3 class="save-button headline-highlight-color" id="save_rename_chat_image">COMPLETE UPLOAD</h1>
+                            <h3 class="save-button headline-highlight-color" id="save_rename_chat_image_status"></h1>
+                    </span>
+        
+        
+                        <script>
+                                Dropzone.options.myAwesomeDropzone = {
+                                    paramName: "file", // The name that will be used to transfer the file
+                                    maxFilesize: 200, // MB
+                                    timeout: 180000,
+                                    accept: function(file, done) {
+                                      if (file.name == "tesla.jpg") {
+                                          done();
+                                      }
+                                      else {
+                                        var saverepaircode = 0;
+                                        var username = $('#usernamegarage').val();                                            
+                                        var token = $('#token').val();
+                                        var plate = $('#theplate').val();
+                                        var timesave = moment().format('YYYYMMDDkkmm');
+                                        var saveas = '' + file.name;
+ 
+                                        saveas = saveas.replace(/\s+/g, '-');
+                                        saveas = saveas.replace(/\(/g, "").replace(/\)/g,"");	
+                                        $('#save_rename_chat_image').show();
+
+
+                                        var imgfull = '<img src="https://chromemufflerbearing.com/uploads/' + saveas + '" class="blog-image" />';
+                                        $('#uploadname').val(saveas);
+                                       
+                                            done();
+                                    }
+                                    }
+                                  };
+                                </script>
+                                            
+        <script>
+            $(function(){
+                $('#save_rename_chat_image').click(function(){
+                    moveimage();
+                });
+
+                var plate = $('#theplate').val();
+                $('#sendtext_number').val(plate);
+                var inspectionid = $('#inspectionid').val();
+                $('#sendtext_message').val('Your inspection results are here: https://chromemufflerbearing.com/c/inspection/' + plate + '/' + inspectionid + ' ');
+
+                $('#sendtext_go').click(function(){
+                    send1();
+                });
+            });
+
+            function send1() {
+                var send1code = 0;
+                var plate = $('#theplate').val();
+                    var token = $('#token').val();
+                    var sendto = $('#sendtext_number').val();
+                    var sendwhat = $('#sendtext_message').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/api/send1",
+                        data: {
+                            token: token,
+                            plate: plate,
+                            sendto: sendto,
+                            sendwhat: sendwhat
+                        }
+                    })
+                    .done(function( data ) {
+                        send1code = 1;
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        for (var i = 0; i < jsonData.length; ++i) {
+
+                        }
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        if (send1code === 0) {
+                            send1();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+
+                    });
+
+            }
+
+            var moveimagecode = 0;
+            function moveimage() {
+                
+                var howtofix = '';
+                var plate = $('#theplate').val();
+                var uploadname = $('#uploadname').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "https://chromemufflerbearing.com/customer/image/move/",
+                        data: {
+                            plate: plate,
+                            imageurl: uploadname
+                        }
+                    })
+                    .done(function( data ) {
+                        moveimagecode = 1;
+                        var jsonStr = JSON.stringify(data);
+                        var jsonData = JSON.parse(jsonStr);
+                        var timestamp = 0;
+
+
+                        for (var i = 0; i < jsonData.length; ++i) {
+                            
+                        }
+
+                        var saverepaircode = 0;
+                        var token = $('#token').val();
+                        var plate = $('#theplate').val();
+                        var timesave = moment().format('YYYYMMDDkkmm');
+                        var datetimenow = moment().format('hh:mm a MM.DD.YYYY');
+
+                        var imgfull = '<img src="https://chromemufflerbearing.com/uploads/' + plate + '/'+jsonData+'" class="blog-image" />';
+                        var username = $('#usernamegarage').val();
+                        $('#save_rename_chat_image_status').html('<h4>Image upload successful</h4>');
+                        $('#inspection_photourl').val('https://chromemufflerbearing.com/uploads/' + plate + '/'+jsonData+'');
+                    })
+                    .fail(function( xhr, status, errorThrown ) {
+                        $('#save_rename_chat_image_status').html('<h4>Image uploaded, failed to rename, please try again</h4>');
+                        if (moveimagecode === 0) {
+                            moveimage();
+                        }
+                    })
+                    .always(function( xhr, status ) {
+                     
+
+                    });
+            };            
+
+
+           
+        
+        </script>
+            <input type="hidden" name="uploadname" id="uploadname" value="0" />
+    </div>      
+    <div class="coloraccent">
+            <div class="one-col-grid">
+                <div>
+                        <input type="text" class="sendmessage" id="inspection_photourl" name="inspection_photourl" value="" placeholder="photourl" />
+                </div>
+                <div>
+                        <textarea class='autoExpand sendmessage' rows='5' data-min-rows='5' id="inspection_note" name="inspection_note" placeholder="part inspection note"></textarea>
+                </div>
+                <div>
+                        <h1 class="colorprimary big-button cursor" id="save_inspection_note">SAVE</h1>
+                </div>
+            </div>
+    </div>                                 
+
+    </div>    
+
+
+        <button class="menu-button" id="open-menu">
+            =
+        </button>
+        <button class="menu-button" id="close-menu">
+            X
+        </button>    
+
+</div><!-- main_content_wrapper-->
+<script>
+
+</script>  
+

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+   
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+   
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+        body {
+            background-color:#292929;
+        }
+    </style>
+
+    </head>
+    <body>
+    <div id="main_content_wrapper">            
+        <div class="left-gutter" id="left-gutter">
+            <div class="far-left">
+                <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+            </div>
+            <style>
+
+            </style>
+            <div class="mid-left">
+                <div id="mid-left-panel-home">
+                    <div class="mid-left-panel-wrapper-load margin-left-panel">
+                        <div><h2></h2></div>
+                        <div id="menu-show-schedule">
+                            <h2 class="colorprimary big-button margin5 marginleft5">Appointments</h2></div>                    
+                        <div>
+                            <form action="#">
+                                <input type="text" id="plate_lookup_number" name="plate_lookup_number">
+                                <h1 id="plate_search" class="colorprimary big-button">SEARCH</h1>
+                            </form>
+                        </div>
+                        <div id="menu-show-add-waiver">
+                            <h2 class="colorprimary big-button margin5 marginleft5">Add Waiver</h2>
+                        </div>                    
+                        <div id="menu-show-add-terms">
+                            <h2 class="colorprimary big-button margin5 marginleft5">Add Terms</h2>
+                        </div>                    
+
+                    </div>
+                </div>
+                <div id="mid-left-panel-inspection">
+                        <div class="mid-left-panel-wrapper-load">
+                            <div id="menu-show-vehicle"><h2 class="colorprimary big-button margin5 marginleft5">Vehicle List</h2></div>
+                            <form action="#">
+                                <div class="marginleft5">
+                                    <input type="text" id="search_caryear" name="search_caryear" placeholder="year" />
+                                </div>
+                                <div class="marginleft5">
+                                    <input type="text" id="search_carmake" name="search_carmake" placeholder="make" />
+                                </div>
+                                <div class="marginleft5">
+                                    <input type="text" id="search_carmodel" name="search_carmodel" placeholder="model" />
+                                </div>
+                                <h1 id="search_bycar" class="colorprimary big-button">SEARCH</h1>
+                            </form>
+                        </div>
+                </div>
+                <style>
+
+                </style>
+                <div id="mid-left-panel-message">
+                        <div class="mid-left-panel-wrapper-load" id="message-left-panel">
+                            <div id="menu-show-inbox"><h2 class="colorprimary big-button marginleft5 margin5">Full Inbox</h2></div>
+                        </div>
+                </div>
+                <div id="mid-left-panel-invoice">
+                        <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                            <div id="menu-show-invoice"><h2 class="colorprimary big-button margin5 marginleft5">UNPaid</h2></div>
+                            <div id="menu-show-paid-invoice"><h2 class="colorprimary big-button margin5 marginleft5">Paid</h2></div>
+                        </div>
+                </div>
+
+    
+            </div>
+    </div><!--end left gutter-->
+
+          
+  <style>            
+        .sendmessage {
+            width:80%;
+            background-color:var(--coloraccent);
+            color:var(--colorprimary);
+            padding:12px 20px;
+            margin:8px 0;
+            box-sizing:border-box;
+            border-bottom-style: none;
+            border-bottom-width:2px;
+            border-left-style:none;
+            border-top-style:none;
+            border-right-style:none;
+            font-size:1.5em;
+            position: relative;
+        }
+        .sendmessage-form li {
+            list-style:none;
+            margin-bottom:5%;
+        }
+        .sendmessage-label {
+            width:10%;
+            left:0%;
+            position: relative;
+            color:#f1f1f1;
+        }
+        textarea:focus, input:focus{
+            outline: none;
+        }
+        *:focus {
+            outline: none;
+        }
+        .margin5 {
+            margin-top:10%;
+        }
+        button {
+            background-color:var(--colorprimary);
+            padding-left:2%;
+            padding-right:2%;
+            padding-top:1%;
+            padding-bottom:1%;
+            border:0;
+            box-shadow:none;
+            border-radius:0px;
+            margin-left:3%;
+            font-size:1.3em;
+        }
+        .invoice-form {
+            position:relative;
+            margin-left:10%;
+        }
+        #schedule_screen, #invoice_screen, #inbox_screen, #vehicle_screen, #add_waiver_screen {
+            display: hidden;
+        }
+        #add_waiver_screen, #add_terms_screen {
+            display:none;
+        }
+        </style> 
+
+<div class="everything-wrapper" id="home_screen">
+    <div class="coloraccent">
+        <div class="two-col-grid">
+            <div>
+
+            </div>
+            <div>
+                
+            </div>
+        </div>
+    </div>
+
+</div> <!--end home_screen -->
+
+        <div class="everything-wrapper" id="add_terms_screen">
+            <div class="two-col-grid colorprimary">
+                <div class="two-col-border">
+                    <h1>Terms vs Waivers</h1>
+                </div>
+                <div class="two-col-border">
+                    <p>Terms sit on the invoice, waivers are on a seperate screen or page. Some states require some notices be on a separate page from the invoice, that's why the two types exist.</p>
+                </div>
+            </div>
+            <div class="colorprimary">
+                <div class="two-col-grid">
+                    <div class="two-col-border">
+                        <h1>Attach Terms</h1>
+                    </div>
+                    <div class="two-col-border" id="available-terms-list">
+                        
+                    </div>
+                </div>                
+            </div>
+
+                <div class="colorprimary">
+                    <div>
+                        <input type="text" id="edit_terms_title" name="edit_terms_title">
+                    </div>
+                    <div>
+                    
+                    </div>
+                    
+                </div>
+                <div class="colorprimary">
+                    <div>
+                        <textarea class='autoExpand sendmessage coloraccent' rows='5' data-min-rows='5' id="edit_terms_text" name="edit_terms_text" placeholder="Terms Text"></textarea>
+                    </div>
+                    <div>
+                        <button class="colorprimary big-button" id="edit_terms_save">SEND</button>
+                    </div>
+                    <div class="colorprimary" id="addpart-status"></div>
+                </div>
+                <div class="colorprimary" id="terms_save_return"></div>
+        </div>
+
+        <div class="everything-wrapper" id="add_waiver_screen">
+            <div class="two-col-grid colorprimary">
+                <div class="two-col-border">
+                    <h1>Waiver vs Terms</h1>
+                </div>
+                <div class="two-col-border">
+                    <p>A waiver sits on the main screen. Terms sit on the invoice screen. Some states require some notices be on a separate page from the invoice, that's why the two types exist.</p>
+                </div>
+            </div>
+            <div class="colorprimary">
+                <div class="two-col-grid">
+                    <div class="two-col-border">
+                        <h1>Attach Waiver</h1>
+                    </div>
+                    <div class="two-col-border" id="available-waiver-list">
+                        
+                    </div>
+                </div>                
+            </div>
+
+                <div class="colorprimary">
+                    <div>
+                        <input type="text" id="edit_waiver_title" name="edit_waiver_title">
+                    </div>
+                    <div>
+                      
+                    </div>
+                    
+                </div>
+                <div class="colorprimary">
+                    <div>
+                        <textarea class='autoExpand sendmessage coloraccent' rows='5' data-min-rows='5' id="edit_waiver_text" name="edit_waiver_text" placeholder="Waiver Text"></textarea>
+                    </div>
+                    <div>
+                        <button class="colorprimary big-button" id="edit_waiver_save">SEND</button>
+                    </div>
+                    <div class="colorprimary" id="addpart-status"></div>
+                </div>
+                <div class="colorprimary" id="waiver_save_return"></div>
+
+        </div>
+
+        <div class="everything-wrapper" id="vehicle_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid coloraccent" id="full-vehicle-inbox">
+
+                </div>
+            </div>
+        </div>
+        <div class="everything-wrapper" id="vehicle_search_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid coloraccent" id="search-vehicle-results">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="everything-wrapper" id="schedule_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid" id="full-schedule-inbox">
+
+                </div>
+            </div>
+        </div>
+        <div class="everything-wrapper" id="invoice_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid" id="full-invoice-inbox">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="everything-wrapper" id="paid_invoice_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid" id="full-paid-invoice-inbox">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="everything-wrapper" id="inbox_screen">
+            <div class="coloraccent">
+                <div class="two-col-grid" id="full-message-inbox">
+
+                </div>
+            </div>
+        </div>        
+        <style>
+            .lightlink  {
+                color:var(--colorprimary);
+            }
+        </style>
+
+        <script>
+            $(function(){
+            fullschedulelist();
+            fullmessagelist();
+            unpaidinvoicelist();
+            paidinvoicelist();
+            fullvehiclelist();
+            loadavaliablewaiverlist();
+            loadavaliabletermslist();
+            $('#search_bycar').click(function(){
+                searchymme();
+                hideadminpanels();
+                checkmobilehidemenu(); 
+                $('#vehicle_search_screen').css('display', 'grid'); 
+                    animateCSS('#vehicle_search_screen', 'slideInRight', function() {
+                        
+                    });
+
+            });
+            $('#menu-show-schedule').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu(); 
+                $('#schedule_screen').css('display', 'grid'); 
+                    animateCSS('#schedule_screen', 'slideInRight', function() {
+
+                    });
+                
+            });
+
+            $('#menu-show-invoice').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#invoice_screen').css('display', 'grid'); 
+                    animateCSS('#invoice_screen', 'slideInRight', function() {
+
+                    });
+            });
+            $('#menu-show-paid-invoice').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#paid_invoice_screen').css('display', 'grid'); 
+                    animateCSS('#paid_invoice_screen', 'slideInRight', function() {
+
+                    });
+            });
+
+            $('#menu-show-inbox').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#inbox_screen').css('display', 'grid'); 
+                    animateCSS('#inbox_screen', 'slideInRight', function() {
+
+                    });
+
+            });
+            $('#menu-show-vehicle').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#vehicle_screen').css('display', 'grid'); 
+                    animateCSS('#vehicle_screen', 'slideInRight', function() {
+
+                    });
+
+            });
+            $('#menu-show-add-waiver').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#add_waiver_screen').css('display', 'grid'); 
+                    animateCSS('#add_waiver_screen', 'slideInRight', function() {
+
+                    });
+
+            });
+            $('#menu-show-add-terms').click(function(){
+                hideadminpanels();
+                checkmobilehidemenu();
+                    $('#add_terms_screen').css('display', 'grid'); 
+                    animateCSS('#add_terms_screen', 'slideInRight', function() {
+
+                    });
+
+            });
+            $('#plate_search').click(function(e){
+                 trysearch();
+             });
+    
+             $('#plate_lookup_number').keypress(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode == '13'){
+                    event.preventDefault();
+                    trysearch();
+                }
+            });  
+            $('#edit_waiver_save').click(function(){
+                savewaiver();
+            });
+            $('#edit_terms_save').click(function(){
+                saveterms();
+            });
+
+            function checkmobilehidemenu() {
+                
+                if(window.innerWidth <= 1024) {
+                    animateCSS('#left-gutter', 'slideOutLeft', function() {
+                        $('#left-gutter').css('display', 'none');
+                        $('#close-menu').css('display', 'none');
+                        $('#open-menu').css('display', 'inherit');
+                    });
+                }
+            }    
+            function hideadminpanels() {
+                $('#home_screen').css('display', 'none');
+                $('#invoice_screen').css('display', 'none');
+                $('#paid_invoice_screen').css('display', 'none');
+                $('#inbox_screen').css('display', 'none');
+                $('#schedule_screen').css('display', 'none');
+                $('#vehicle_screen').css('display', 'none');
+                $('#vehicle_search_screen').css('display', 'none');
+                $('#add_waiver_screen').css('display', 'none');
+                $('#add_terms_screen').css('display', 'none');
+            }
+            function trysearch() {
+                var status = 0;
+                var plate = $('#plate_lookup_number').val();
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/save/plate",
+                        data: {
+                            plate: plate
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Success: " );
+                    window.location.href = 'https://chromemufflerbearing.com/api/g/home/' + plate + '?token=' + token;
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                               
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+            function searchymme() {
+                var status = 0;
+                var token = $('#token').val();
+                var caryear = $('#search_caryear').val();
+                var carmake = $('#search_carmake').val();
+                var carmodel = $('#search_carmodel').val();
+
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/vehicle/list/ymme",
+                        data: {
+                            token: token,
+                            caryear: caryear,
+                            carmake: carmake,
+                            carmodel: carmodel
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    $('#search-vehicle-results').append('<div><h3>Search Results: ' + caryear + '/'+carmake+'/'+carmodel+' </h3></div><div><p></p><p></p></div>');
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#search-vehicle-results').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a>/' + jsonData[i].model+'</h3></div><div><p>'+jsonData[i].year+'</p><p>' + jsonData[i].make + '</p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };            
+
+            function fullmessagelist() {
+                var status = 0;
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/message/list",
+                        data: {
+                            token: token
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#full-message-inbox').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a>/' + jsonData[i].sentby+'</h3></div><div><p>'+jsonData[i].nicetime+'</p><p>' + jsonData[i].message + '</p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+            function fullschedulelist() {
+                var status = 0;
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/schedule/list",
+                        data: {
+                            token: token
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#full-schedule-inbox').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a></h3></div><div><p>'+jsonData[i].appointment+'</p><p>' + jsonData[i].appointmenttime + '</p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                               
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+
+
+            function unpaidinvoicelist() {
+                var status = 0;
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/invoice/list/invoicestatus",
+                        data: {
+                            token: token,
+                            invoicestatus: 'unpaid'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#full-invoice-inbox').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a></h3></div><div><p>'+jsonData[i].invoicestatus+'</p><p>' + jsonData[i].typeof + '</p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+
+            function paidinvoicelist() {
+                var status = 0;
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/invoice/list/invoicestatus",
+                        data: {
+                            token: token,
+                            invoicestatus: 'paid'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#full-paid-invoice-inbox').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a></h3></div><div><p>'+jsonData[i].invoicestatus+'</p><p>' + jsonData[i].typeof + '</p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                             
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+
+            function fullvehiclelist() {
+                var status = 0;
+                var token = $('#token').val();
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/view/vehicle/list/",
+                        data: {
+                            token: token
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+                        $('#full-vehicle-inbox').append('<div><h3><a class="lightlink" href="https://chromemufflerbearing.com/api/g/home/' + jsonData[i].plate + '?token=' + token+'">' + jsonData[i].plate + '</a></h3></div><div><p>'+jsonData[i].year+'</p><p>' + jsonData[i].make + ' ' +jsonData[i].model+' </p></div>');
+                    }
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                               
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+            var loadavaliablewaiverlistcode = 0;
+            function loadavaliablewaiverlist() {
+                    
+                            
+                            var token = $('#token').val();
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/api/view/waiver/list",
+                                data: {
+                                    token:token
+                                }
+                            })
+                            .done(function( data ) {
+                                loadavaliablewaiverlistcode = 1;
+                                $('#available-waiver-list').html('</br>');
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                    $('#available-waiver-list').append('<button class="colorprimary little-button" onclick="addwaiver(\''+jsonData[i].waiverid+'\');">' + jsonData[i].waivertitle + '</button>');
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadavaliablewaiverlistcode === 0) {
+                                    loadavaliablewaiverlist();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+
+            function savewaiver() {
+                var status = 0;
+                var token = $('#token').val();
+                var waivertitle = $('#edit_waiver_title').val();
+                var waivertext = $('#edit_waiver_text').val();
+
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/add/waiver/to/list",
+                        data: {
+                            token: token,
+                            waivertitle: waivertitle,
+                            waivertext: waivertext
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+
+                    }
+                    $('#waiver_save_return').append('<h3>Waiver Saved</h3>');
+
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+                       
+
+
+            var loadavaliabletermslistcode = 0;
+            function loadavaliabletermslist() {
+                    
+                            
+                            var token = $('#token').val();
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/api/view/terms/list",
+                                data: {
+                                    token:token
+                                }
+                            })
+                            .done(function( data ) {
+                                loadavaliabletermslistcode = 1;
+                                $('#available-terms-list').html('</br>');
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                    $('#available-terms-list').append('<button class="colorprimary little-button" onclick="addterms(\''+jsonData[i].termsid+'\');">' + jsonData[i].termstitle + '</button>');
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadavaliabletermslistcode === 0) {
+                                    loadavaliablewaiverlist();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+
+
+            function saveterms() {
+                var status = 0;
+                var token = $('#token').val();
+                var termstitle = $('#edit_terms_title').val();
+                var termstext = $('#edit_terms_text').val();
+
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/api/add/terms/to/list",
+                        data: {
+                            token: token,
+                            termstitle: termstitle,
+                            termstext: termstext
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    var jsonStr = JSON.stringify(data);
+                    var jsonData = JSON.parse(jsonStr);
+                    for (var i = 0; i < jsonData.length; ++i) {
+
+                    }
+                    $('#terms_save_return').append('<h3>Terms Saved</h3>');
+
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+
+
+    });
+
+            var addwaivercode = 0;
+                        function addwaiver(id) {
+                            var token = $('#token').val();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/api/view/waiver/by/id",
+                                data: {
+                                    token:token,
+                                    waiverid: id
+                                }
+                            })
+                            .done(function( data ) {
+                                loadavaliablewaiverlistcode = 1;
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                   $('#edit_waiver_title').val('' + jsonData[i].waivertitle);
+                                   $('#edit_waiver_text').val('' + jsonData[i].waivertext);
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadavaliablewaiverlistcode === 0) {
+                                    loadavaliablewaiverlist();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+
+                        };
+
+
+                        var addtermscode = 0;
+                        function addterms(id) {
+                               
+                            var token = $('#token').val();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/api/view/terms/by/id",
+                                data: {
+                                    token:token,
+                                    termsid: id
+                                }
+                            })
+                            .done(function( data ) {
+                                addtermscode = 1;
+                             
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                   
+                                   $('#edit_terms_title').val('' + jsonData[i].termstitle);
+                                   $('#edit_terms_text').val('' + jsonData[i].termstext);
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (addtermscode === 0) {
+                                    addterms(id);
+                                    
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+
+                        };
+    
+    function animateCSS(element, animationName, callback) {
+        const node = document.querySelector(element)
+        node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+        node.classList.remove('animated', animationName)
+        node.removeEventListener('animationend', handleAnimationEnd)
+
+        if (typeof callback === 'function') callback()
+    }
+        node.addEventListener('animationend', handleAnimationEnd)
+    }
+
+        </script>        
+        <button class="menu-button" id="open-menu">
+            =
+        </button>
+        <button class="menu-button" id="close-menu">
+            X
+        </button>    
+
+</div><!-- main_content_wrapper-->
+
+

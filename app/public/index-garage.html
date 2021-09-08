@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<head>
+    <meta charset='utf-8' />
+    <title>Chrome Muffler Bearing Auto Repair Shop Software</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/scripts/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://chromemufflerbearing.com/pagebuild/moto.css"/>
+    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+    <!--header-->
+    <script src="https://chromemufflerbearing.com/moment.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://chromemufflerbearing.com/chat/chat-func.js"></script>
+    <script src="https://chromemufflerbearing.com/menu/menu-func.js"></script>
+    <link rel="stylesheet" href="https://chromemufflerbearing.com/chat/chat-window.css" />
+
+</head><body><div id="everything-else"><!--end header-->
+    <style>.intro{background:url(https://chromemufflerbearing.com/uploads/20191031065412/20191208235300fox_collection.jpg); background-position:10% 10%; background-size:cover; -webkit-background-size:cover; -o-background-size:cover; -moz-background-size:cover; }</style>
+    <div class="two-col-grid">
+        <style>
+            .sendmessage {
+                width:100%;
+            }
+            input[type=text], input[type=password] {
+                width:100%;
+            }
+            #chat_phone, #chat_message, input[type=text], input[type=password], input[type=number] {
+        padding:12px 20px;
+        margin:8px 0;
+        box-sizing:border-box;
+        font-size:2em;
+        position: relative;
+    }
+    input[type=text], input[type=number], input[type=password] {
+          
+            padding:12px 20px;
+            margin:8px 0;
+            box-sizing:border-box;
+            font-size:2em;
+            position: relative;
+        }
+        textarea:focus, input:focus {
+            outline:none;
+        }        
+            .big-button, #chat-start-button {
+                position: relative;
+                display:inline-block;
+                background-color:var(--coloraccent);
+                color:var(--colorprimary);
+                font-size:1.6em;
+                padding:3%;
+                width:50%;
+                margin-top:3%;
+                margin-left:0%;
+                margin-bottom:10%;
+                border-style:solid;
+                border-color:var(--colorprimary);
+                border-width:2px;
+                cursor: pointer;
+            }
+        </style>
+        <script>
+       
+        </script>
+        <div class="fullbackground intro ">
+                <img src="https://chromemufflerbearing.com/fame/fame_nobg.png" class="toplogo" id="famelogo" />
+        </div>
+        <div class="colorprimary">
+            <div class="hero-intro">
+                    <input type="text" class="sendmessage" id="email" name="email"/>
+                    <input type="password" class="sendmessage" id="pw" name="pw"/>
+                    <button class="big-button" id="admingo">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            $(function(){
+    
+            });
+            $("#outputreturn_signup").append(" loaded ");
+          
+             $('#admingo').click(function(e){
+                
+                 trylogin2();
+             });
+    
+            function trylogin2() {
+                var status = 0;
+                var email = $('#email').val();
+                var pw = $('#pw').val();
+    
+                $.ajax({
+                        url: "https://chromemufflerbearing.com/rideauth",
+                        data: {
+                            email: email,
+                            pw: pw
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Success: " + data.token);
+                    window.location.href = 'https://chromemufflerbearing.com/api/home?token=' + data.token;
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                              
+                    }
+                    $("#outputreturn_signup").append(" Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append(" Always ");
+                });
+        
+            };
+    
+        </script>
+    
+    
+    
+<!--begin footer-->
+
+    
+    
+    </div><!--end everything else-->
+        <div class="show-menu" id="show-menu">=</div>
+        <div class="hide-menu" id="hide-menu">X</div>
+        <div class="hide-menu" id="hide-get-started-menu">X</div>
+        <div class="hide-menu" id="hide-schedule-menu">X</div>
+        <div class="close-map" id="hide-map">X</div>
+        <div class="chat-menu" id="open-chat-menu"><img class="chaticon" src="https://chromemufflerbearing.com/appicon/chat-icon.png" /></div>
+        <a href="https://www.google.com/maps/search/?api=1&query=38.796490,-104.774170"><div class="directions-button" id="launch-directions">Directions</div></a>
+        <div id='map'></div>
+    
+            <div class="chat-window" id="customer-chat-window">
+                <div class="chat-window-close" id="chat-window-close"><h4>CLOSE</h4></div>
+                <div class="chat-window-setup" id="chat-setup">
+                    <h3>Let's chat! We're here to help, to get started enter your name and phone number.</h3>
+                    <input type="text" id="chat-name" name="chat-name" placeholder="your name" />
+                    <input type="text" id="chat-phone" name="chat-phone" placeholder="your phone number" />
+                    <h3 id="blank-info" class="headline-highlight-color">We need your first name and phone number to continue, we don't abuse your info it's to confirm you're serious and not trying to waste our time, thanks for understanding.</h3>
+                    <button class="big-button" id="chat-start-button">SAY HELLO</button>
+                </div>
+                <div class="chat-window-chatbox" id="chat-main">
+                    <div class="chat-wrapper" id="chat_thread">
+                            <h3>Say hello?</h3>
+                        </div>                
+                        <div class="bottom" id="bottom"></div>
+                </div>
+                <div class="chat-window-textbox" id="chat-to-send">
+                    <div>
+                        <input type="text" id="chat-text-tosend" name="chat-text-tosend" value="" placeholder="your message..." />
+                    </div>
+                    <div id="send-chat-text" class="cursor-point">
+                        <h2 class="send-message-button">SEND</h2>
+                    </div>
+                </div>
+            </div><!--end chat-window-->
+            <input type="hidden" name="theplate" id="theplate" value="0" />
+            <input type="hidden" name="username" id="username" value="Tupac" />
+    
+    <script>
+    </script>
+    <div class="moto_menu sourcecode" id="get_started_menu">
+        <div class="moto_menu_content">
+            <h2>Next Steps? Get in Contact with us or schedule an appointment</h2>
+            <div class="get-started-list" id="get-started-option-list">
+                    <div><h2 class="headline-highlight-color cursor-point" id="show-start-schedule">Schedule</h2></div>
+                    <div><h2 class="headline-highlight-color cursor-point">Call</h2></div>
+            </div>
+           
+        
+        </div>
+    
+        
+    </div>
+    <div class="moto_menu sourcecode" id="get_started_schedule_menu">
+            <div class="moto_menu_content">
+                <div class="get-started-schedule" id="get-started-schedule">
+                    <div id="message-response"><h3>To schedule an appointment, see your repair status or pay your bill, enter your phone number and click next. We don't abuse, share or sell your phone number.</h3></div>
+                    <form action="#">
+                            <input type="text" id="plate_signup" name="plate_signup" placeholder="phone number">
+                            <div><h2 class="headline-highlight-accent" id="signup">NEXT</h2></div>
+                        </form>
+                </div>
+            </div>
+            
+        </div>
+    
+    <div class="moto_menu sourcecode" id="track_menu">
+        <div class="moto_menu_content">
+            <span id="menu_list_wrapper">
+                    <h3>Home</h3>
+            </span>    
+            <h2 class="moto-sideways"><span class="blackops">ChromeMufflerBearing</span> <span class="racing"></span></h2>
+        </div>
+    </div>
+   
+        
+        
+        
+        </body></html>

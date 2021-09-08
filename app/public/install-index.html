@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<head>
+    <meta charset='utf-8' />
+    <title>Chrome Muffler Bearing Auto Repair Shop Software</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no' />
+    <script src="https://repairgorilla.com/scripts/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://repairgorilla.com/pagebuild/moto.css"/>
+    <!--header-->
+
+</head><body><div id="everything-else"><!--end header-->
+    <style>.intro{background:url(https://repairgorilla.com/uploads/20191031065412/20191208235300fox_collection.jpg); background-position:10% 10%; background-size:cover; -webkit-background-size:cover; -o-background-size:cover; -moz-background-size:cover; }</style>
+    <div class="two-col-grid">
+        <style>
+            .sendmessage {
+                width:100%;
+            }
+            input[type=text], input[type=password] {
+                width:100%;
+            }
+            #chat_phone, #chat_message, input[type=text], input[type=password], input[type=number] {
+        padding:12px 20px;
+        margin:8px 0;
+        box-sizing:border-box;
+        font-size:2em;
+        position: relative;
+    }
+    input[type=text], input[type=number], input[type=password] {
+          
+            padding:12px 20px;
+            margin:8px 0;
+            box-sizing:border-box;
+            font-size:2em;
+            position: relative;
+        }
+        textarea:focus, input:focus {
+            outline:none;
+        }        
+            .big-button, #chat-start-button {
+                position: relative;
+                display:inline-block;
+                background-color:var(--coloraccent);
+                color:var(--colorprimary);
+                font-size:1.6em;
+                padding:3%;
+                width:50%;
+                margin-top:3%;
+                margin-left:0%;
+                margin-bottom:10%;
+                border-style:solid;
+                border-color:var(--colorprimary);
+                border-width:2px;
+                cursor: pointer;
+            }
+        </style>
+        <script>
+       
+        </script>
+        <div class="fullbackground intro">
+            <div class="hero-intro" id="outputreturn_signup"></div>
+        </div>
+        <div class="colorprimary">
+            <div class="hero-intro">
+                <p>Domain Name</p>
+                    <input type="text" class="sendmessage" id="domain_name" name="domain_name"/>
+                <p>Sendgrid User name</p>
+                    <input type="text" class="sendmessage" id="sendgrid_user" name="sendgrid_user"/>
+                <p>Sendgrid User Pass</p>
+                    <input type="text" class="sendmessage" id="sendgrid_pass" name="sendgrid_pass"/>
+                <p>Twilio Account SID</p>
+                    <input type="text" class="sendmessage" id="twilio_sid" name="twilio_sid"/>
+                <p>Twilio Auth Token</p>
+                    <input type="text" class="sendmessage" id="twilio_auth" name="twilio_auth"/>
+                <p>Twilo Phone Number</p>
+                    <input type="text" class="sendmessage" id="twilio_phone" name="twilio_phone"/>
+                <p>Admin Phone Number</p>
+                    <input type="text" class="sendmessage" id="admin_phone" name="admin_phone"/>
+                <p>Admin Email</p>
+                    <input type="text" class="sendmessage" id="admin_email" name="admin_email"/>
+                <p>Stripe Server Side Key</p>
+                    <input type="text" class="sendmessage" id="stripe_server" name="stripe_server"/>
+                <p>Stripe Public Key</p>
+                    <input type="text" class="sendmessage" id="stripe_public" name="stripe_public"/>
+                <p>Secret Key</p>
+                    <input type="text" class="sendmessage" id="secret_key" name="secret_key"/>
+                <p>Database URL</p>
+                    <input type="text" class="sendmessage" id="mongo_url" name="mongo_url"/>
+
+                    <button class="big-button" id="admingo">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            $(function(){
+    
+            });
+            $("#outputreturn_signup").append(" ready ");
+             $('#admingo').click(function(e){
+                 //e.preventDefault();
+                 //var plate = $('#plate_signup').val();
+                 tryinstall();
+             });
+    
+            function tryinstall() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();    
+                $.ajax({
+                        url: "https://"+domain_name+"/install",
+                        data: {
+                            domain: domain_name,
+                            ogdomain: 'chromemufflerbearing.com'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstall1();
+                });
+        
+            };
+
+            
+            function tryinstall1() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();    
+                $.ajax({
+                        url: "https://"+domain_name+"/install1",
+                        data: {
+                            domain: domain_name,
+                            ogdomain: 'chromemufflerbearing.com'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 2: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 2: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 3: Begin");
+                    tryinstall2();
+                });
+        
+            };
+
+            function tryinstall2() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();    
+                $.ajax({
+                        url: "https://"+domain_name+"/install2",
+                        data: {
+                            domain: domain_name,
+                            ogdomain: 'chromemufflerbearing.com'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 3: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 3: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 4: Begin");
+                    tryinstall3();
+                });
+        
+            };
+
+
+            function tryinstall3() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();    
+                $.ajax({
+                        url: "https://"+domain_name+"/install3",
+                        data: {
+                            domain: domain_name,
+                            ogdomain: 'chromemufflerbearing.com'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 4: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 4: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 5: Begin");
+                    tryinstallserver1();
+                });
+        
+            };
+
+            function tryinstallserver1() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var sendgrid_user = $('#sendgrid_user').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: sendgrid_user,
+                            search: 'sendg_user'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver2()
+                });
+        
+            };
+            
+            
+            function tryinstallserver2() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var sendgrid_pass = $('#sendgrid_pass').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: sendgrid_pass,
+                            search: 'sendg_pass'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver3();
+                });
+        
+            };
+
+            function tryinstallserver3() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var twilio_sid = $('#twilio_sid').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: twilio_sid,
+                            search: 'twil_sid'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver4();
+
+                });
+        
+            };
+
+            function tryinstallserver4() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var twilio_auth = $('#twilio_auth').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: twilio_auth,
+                            search: 'twil_auth'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver5();
+
+                });
+        
+            };
+
+
+            function tryinstallserver5() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var twilio_phone = $('#twilio_phone').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: twilio_phone,
+                            search: 'twil_numb'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver6();
+
+                });
+        
+            };
+
+
+            
+            function tryinstallserver6() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var admin_phone = $('#admin_phone').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: admin_phone,
+                            search: 'twil_admin_numb'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver7();
+
+                });
+        
+            };
+
+            
+            function tryinstallserver7() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var admin_email = $('#admin_email').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: admin_email,
+                            search: 'admin_email'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver8();
+
+                });
+        
+            };
+
+
+            function tryinstallserver8() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var stripe_server = $('#stripe_server').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: stripe_server,
+                            search: 'str_server'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver9();
+
+                });
+        
+            };
+
+
+
+            function tryinstallserver9() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var stripe_public = $('#stripe_public').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/server",
+                        data: {
+                            replace: stripe_public,
+                            search: 'str_public'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver10();
+
+                });
+        
+            };            
+
+
+            function tryinstallserver10() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var secret_key = $('#secret_key').val();
+
+                $.ajax({
+                        url: "https://"+domain_name+"/install/db",
+                        data: {
+                            replace: secret_key,
+                            search: 'co_secret'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 2: Begin");
+                    tryinstallserver11();
+
+                });
+        
+            };            
+
+
+            
+            function tryinstallserver11() {
+                var status = 0;
+                var domain_name = $('#domain_name').val();  
+                var mongo_url = $('#mongo_url').val();
+                mongo_url = mongo_url.replaceAll('/', '\\/');
+                $.ajax({
+                        url: "https://"+domain_name+"/install/db",
+                        data: {
+                            replace: mongo_url,
+                            search: 'co_database'
+                        },
+                        type: "POST"
+                })
+                .done(function( data ) {
+                    status = 10;
+                    $("#outputreturn_signup").append(" Step 1: " + data);
+                })
+                .fail(function( xhr, status, errorThrown ) {
+                    if (status === 0) {
+                                //$("#outputreturn").append(" Error 1971 ");
+                    }
+                    $("#outputreturn_signup").append("Step 1: Fail ");
+                })
+                .always(function( xhr, status ) {
+                    $("#outputreturn_signup").append("Step 12: Finished");
+                });
+        
+            };            
+        </script>
+    
+    
+    
+<!--begin footer-->
+
+    
+    
+    </div><!--end everything else-->
+      
+    
+   
+        
+        
+        
+        </body></html>

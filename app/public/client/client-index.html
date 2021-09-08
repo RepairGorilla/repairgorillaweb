@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+    <script src="https://chromemufflerbearing.com/chat/chat-func.js"></script>
+    <link rel="stylesheet" href="https://chromemufflerbearing.com/chat/chat-window.css" />
+    <script src="https://chromemufflerbearing.com/moment.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+.chat-menu {
+    display:inline-block;
+    position:fixed;
+    bottom:4%;
+    right:2%;
+    height:auto;
+    font-size:1.5em;
+    width:auto;
+    padding:2%;
+    background-color:var(--colorhighlight);
+    color:var(--colorprimary);
+    cursor: pointer;
+}
+@media only screen and (max-width: 900px) {
+    .chat-menu {
+        display:inline-block;
+        position:fixed;
+        bottom:4%;
+        right:1%;
+        height:auto;
+        font-size:2.3em;
+        width:auto;
+        padding:5%;
+        background-color:var(--colorhighlight);
+        color:var(--colorprimary);
+        cursor: pointer;
+    }
+}
+    </style>
+
+    </head>
+    <body>
+        <script>
+        $(function(){
+           
+        });          
+            
+        </script>
+    <div id="main_content_wrapper">            
+         <div class="left-gutter" id="left-gutter">
+                <div class="far-left">
+                    <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                    <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                    <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                    <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                    <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+                </div>
+                <div class="mid-left">
+                    <div id="mid-left-panel-home">
+                        <div class="mid-left-panel-wrapper-load margin-left-panel">
+                            <h2 id="vehicle-info-ymme"></h2>
+                            <div id="go-home"></div>                
+                        </div>
+                    </div>
+                    <div id="mid-left-panel-inspection">
+                            <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                <h4>Select an inspection</h4>
+                                <div class="nav-list-wrapper" id="inspection-list">                                    
+                                </div>
+                            </div>
+                    </div>
+                    <div id="mid-left-panel-message">
+                            <div class="mid-left-panel-wrapper-load margin-left-panel" id="message-left-panel">
+                                <div id="pagelist"></div>
+                                <div id="go-message"></div>
+                                
+                            </div>
+                        </div>
+                    <div id="mid-left-panel-invoice">
+                            <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                <h2>Select an Invoice</h2>
+                                <div id="invoice-total-list"></div>
+                                <div id="pagelist">
+
+                                </div>
+                            </div>
+                    </div>
+
+        
+                </div>
+            </div>
+
+
+<style>
+
+</style>
+                <div class="everything-wrapper" id="home_screen">
+                  <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div>
+                                <h1>Welcome!</h1>
+                            </div>
+                            <div>
+                                <h3>Use this repair dashboard to send us a message, check repair status view inspection results and pay your bill</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="colorprimary">
+                            <div class="two-col-grid">
+                                <div class="two-col-border">
+                                    <h1>Let's Chat</h1>
+                                </div>
+                                <div class="two-col-border">
+                                    <h4>We're here to help, send us a message and we'll respond usually within {1/2 hour} on business days</h4>
+                                    <h4></h4>
+                                </div>
+                            </div>
+                        </div>    
+                    <div class="colorprimary">
+                        <div class="two-col-grid">
+                            <div class="two-col-border">
+                                <h1>How can we help you?</h1>
+                            </div>
+                            <div class="two-col-border" id="customer-complaint">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="coloraccentlight">
+                        <div class="two-col-grid">
+                            <div class="two-col-border">
+                                <h3>Appointment Time</h3>
+                            </div>
+                            <div class="two-col-border">
+                                <h3>Your appointmnet is set for: <span id="status-short"></span></h3>
+                                <h4></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                    $(function(){
+                        loadinvoicelisthome();
+                        loadwaiverapproval();
+                        
+                    });
+                    var loadinvoicelisthomecode = 0;
+                        function loadinvoicelisthome() {
+                            var plate = $('#theplate').val();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/view/repair/invoice/list",
+                                data: {
+                                    plate: plate
+                                }
+                            })
+                            .done(function( data ) {
+                                loadinvoicelisthomecode = 1;
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                    if (jsonData[i].typeof === 'workorder') {
+                                        $('#invoice-list-main-screen').append('<div class="two-col-border"><h3>WORK ORDER</h3><a href="https://chromemufflerbearing.com/c/bill/'+plate+'/'+jsonData[i].invoiceid+'"><p class="coloraccent little-button">' + jsonData[i].invoiceid + '</p></a></div><div class="two-col-border"><h4>Approval Status: '+jsonData[i].approvalstatus+'</h4><h2>'+jsonData[i].workdesc+'</h2></div>');
+                                        if (jsonData[i].isnorepaircost === 'yes') {
+                                            $('#invoice-list-main-screen').append('<div class="two-col-border"><h2></h2></div><div class="two-col-border"><h4>This is the estimate of reassembly without repair</h4></div>');
+                                        }
+                                    }
+                                    if (jsonData[i].typeof === 'invoice') {
+                                        $('#invoice-list-main-screen').append('<div class="two-col-border"><h3>INVOICE</h3><a href="https://chromemufflerbearing.com/c/bill/'+plate+'/'+jsonData[i].invoiceid+'"><p class="coloraccent little-button">' + jsonData[i].invoiceid + '</p></a><h2>Paid Status: '+jsonData[i].invoicestatus+'</h2></div><div class="two-col-border"><h4>Description: '+jsonData[i].workdesc+'</h4></div>');
+                                    }
+                                    loadexpecteddatelist(jsonData[i].invoiceid);
+
+                                }
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadinvoicelisthomecode === 0) {
+                                    loadinvoicelisthome();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+                        var loadwaiverapprovalcode = 0;
+                        function loadwaiverapproval() {
+                            var plate = $('#theplate').val();
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/view/waiver/approval",
+                                data: {
+                                    plate: plate
+                                }
+                            })
+                            .done(function( data ) {
+                                loadwaiverapprovalcode = 1;
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                    $('#waiver-list-main-screen').append('<div class="two-col-border"><h3>'+jsonData[i].waivertitle+'</h3><button class="coloraccent little-button" onclick="showwaiver(\''+jsonData[i].timestamp+'\')">VIEW</button></div><div class="two-col-border"><p>Description: '+jsonData[i].waivertext+'</p></div>');
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadwaiverapprovalcode === 0) {
+                                    loadwaiverapproval();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+                        function showwaiver(id) {
+                            animateCSS('#home_screen', 'slideOutRight', function() {
+                                $('#home_screen').css('display', 'none');
+                                $('#waiver_screen').css('display', 'grid');   
+                                    animateCSS('#waiver_screen', 'slideInRight', function() {
+
+                                    });
+                            });
+                            var plate = $('#theplate').val();                            
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/view/waiver/id/approval",
+                                data: {
+                                    plate: plate,
+                                    timestamp: id
+                                }
+                            })
+                            .done(function( data ) {
+                                addwaivercode = 1;
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                        $('#waiver-title').html('<h3>' + jsonData[i].waivertitle + '</h3>');
+                                        $('#waiver-text').html('<h3>'+ jsonData[i].waivertext + '</h3>');
+                                        $('#the_signature').val(jsonData[i].approvalsignature);
+                                        $('#waiver_text').val(jsonData[i].waivertext);
+
+                                        $('#waiver-sign-button').html('<button id="sign-waiver" class="coloraccent big-button" onclick="signwaiver(\''+jsonData[i].timestamp+'\')">SIGN</button>');
+                                        $('#waiver-print-button').html('<a href="https://chromemufflerbearing.com/invoice/'+plate+'/'+jsonData[i].timestamp+'_waiver.html">Printable Version</a>');
+                                        if (jsonData[i].approvalsignature === 'unsigned') {
+                                            $('#the_signature').css('display', 'inherit');
+                                        } else {
+                                            $('#the_signature').css('display', 'hidden');
+                                        }
+                                }
+                                
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (addwaivercode === 0) {
+
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+                        }
+                    
+
+                        var addwaivercode = 0;
+                        function signwaiver(id) {
+                            var plate = $('#theplate').val();
+                            var vehicleid = $('#vehicleid').val();
+                            var thesignature = $('#the_signature').val();
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/sign/waiver/approval",
+                                data: {
+                                    plate: plate,
+                                    vehicleid: vehicleid,
+                                    waiverid: id, //actually timestamp from waiver request
+                                    approvalstatus: 'yes',
+                                    approvalsignature: thesignature
+                                }
+                            })
+                            .done(function( data ) {
+                                addwaivercode = 1;
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                for (var i = 0; i < jsonData.length; ++i) {
+
+                                }
+                                commitwaiverforsave(id);
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (addwaivercode === 0) {
+                                    
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+                        };
+
+                        var loadexpecteddatelistcode = 0;
+                        function loadexpecteddatelist(invoiceid) {
+                            var plate = $('#theplate').val();
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/view/expected/date/list",
+                                data: {
+                                    plate: plate,
+                                    invoiceid: invoiceid
+                                }
+                            })
+                            .done(function( data ) {
+                                loadexpecteddatelistcode = 1;
+
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                
+                                for (var i = 0; i < jsonData.length; ++i) {
+                                    $('#donedate-change-log').append('<h5>[' + i + ']: Expected Completion Date Log ' + jsonData[i].donedate + '</h5><p>Submitted at ' + jsonData[i].nicetime + ' UTC </p><p>Invoice: ' + jsonData[i].invoiceid + '</p>');
+                                }
+                                $('#is_approval').css('display', 'grid'); 
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (loadexpecteddatelistcode === 0) {
+                                    loadexpecteddatelist();
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+
+                        var commitwaiverforsavecode = 0;
+                        function commitwaiverforsave(id) {
+                            var plate = $('#theplate').val();
+                            var invoiceid = $('#invoiceid').val();
+                            var waiversave = '<div class="one-col-grid"><div>';
+                            var waivertext = $('#waiver_text').val();
+                            waiversave = waiversave + '<h3>' + waivertext + '</h3></div>'
+                            var waiversignature = $('#the_signature').val();
+                            if (waiversignature != 'unsigned') {
+                                waiversave = waiversave + '<div><h4>Signed: ' + waiversignature + '</h4></div>';
+
+                            } else {
+                                waiversave = waiversave + '<div><h4>Signature: </h4></div>'
+                            }
+                            waiversave = waiversave + '</div>';
+                            $.ajax({
+                                type: "POST",
+                                url: "https://chromemufflerbearing.com/save/invoice/html",
+                                data: {
+                                    plate: plate,
+                                    invoiceid: id,
+                                    sectionfilename: 'waiver',
+                                    sectiontext: waiversave
+                                }
+                            })
+                            .done(function( data ) {
+                                commitwaiverforsavecode = 1;
+
+                                var jsonStr = JSON.stringify(data);
+                                var jsonData = JSON.parse(jsonStr);
+                                
+                                for (var i = 0; i < jsonData.length; ++i) {     
+
+                                }
+                                $('#waiver-thank-you').append('<h3>Signature Recorded</h3>');
+
+                            })
+                            .fail(function( xhr, status, errorThrown ) {
+                                if (commitwaiverforsavecode === 0) {
+                                    commitwaiverforsave(id);
+                                }
+                            })
+                            .always(function( xhr, status ) {
+
+                            });
+
+                        };
+
+
+                    </script>
+                    
+
+
+
+                    <div class="colorprimary">
+                        <div class="two-col-grid two-col-border" id="status-container-full">
+
+                        </div>
+                    </div>
+
+                    <div class="colorprimary">
+                        <div class="two-col-grid" id="waiver-list-main-screen">
+
+                        </div>
+                    </div>
+
+                    <div class="colorprimary">
+                        <div class="two-col-grid" id="invoice-list-main-screen">
+
+                        </div>
+                    </div>
+                    <div class="colorprimary" id="donedate_log">
+                        <div class="two-col-grid">
+                            <div>
+                                <h5>Expected Completion Date Log:</h5>
+                            </div>
+                            <div id="donedate-change-log">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- end home screen -->
+                <style>
+                #waiver_screen { display:none; }
+                </style>
+
+                <div class="everything-wrapper" id="waiver_screen">
+                    <div class="coloraccent" id="close-waiver">
+                        <div class="two-col-grid">
+                            <div><h1> <- Back </h1></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="coloraccent">
+                        <div class="one-col-grid">
+                            <div>
+                                <span id="waiver-title"></span>
+                            </div>
+                            <div>
+                                <span id="waiver-text"></span>
+                            </div>
+                            <div>
+                                <input type="text" class="marginleft5 sendmessage" id="the_signature" name="the_signature" placeholder="YOUR SIGNATURE HERE">
+                                <input type="hidden" id="waiver_text" name="waiver_text" value="">
+                            </div>
+                            <div id="waiver-sign-button">
+                                
+                            </div>
+                            <div id="waiver-print-button">
+                                
+                            </div>
+                            <div id="waiver-thank-you">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>    
+                <div class="everything-wrapper" id="screen_settings">
+                    <div class="coloraccent" id="close-settings">
+                        <div class="two-col-grid">
+                            <div><h1> <- Back </h1></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="coloraccent" >
+                        <div class="one-col-grid">
+
+                        </div>
+                    </div>
+
+                </div>   
+                <button class="menu-button" id="open-menu">
+                    =
+                </button>
+                <button class="menu-button" id="close-menu">
+                    X
+                </button>    
+
+</div><!-- main_content_wrapper-->
+
+<style>
+.sendmessage-form > li {
+    position:relative;
+    list-style: none;
+    margin-top:3%;
+}
+.sendmessage-label {
+    position:relative;
+    margin-top:2%;
+}
+.sendmessage {
+    font-size:1.8em;
+}
+</style>
+<!-- from v1-->
+<div id="vehicle-detail" class="add-car-wrapper">
+    <div class="car-info-form">
+        <h3>To help you better we need some basic details about your vehicle</h3>
+        <form action="#" class="sendmessage-form">
+                <span class="sendmessage-label">Year</span>
+                <li><input type="text" class="sendmessage" id="vehicle_year" name="vehicle_year"></li>
+                <span class="sendmessage-label">Make</span>
+                <li><input type="text" class="sendmessage" id="vehicle_make" name="vehicle_make"></li>
+                <span class="sendmessage-label">Model</span>
+                <li><input type="text" class="sendmessage" id="vehicle_model" name="vehicle_model"></li>
+                <span class="sendmessage-label">Miles [vin, cid]</span>
+                <li><input type="text" class="sendmessage" id="vehicle_vin" name="vehicle_vin"></li>
+                <span>
+                <h1 class="save-button" id="save_vehicle_details">NEXT</h1>
+                <h3 id="save-vehicle-return-status"></h3>
+                </span>
+        </form>
+    </div>
+
+
+</div>
+<div id="complaint-detail" class="add-car-wrapper">
+    <div class="car-info-form">
+            <h4 class="colorprimary"></h4>
+            <h4 id="repair-reason-2"></h4>
+            <span class="texta-wrapper">
+                
+            <form action="#" class="sendmessage-form">
+
+                <h4>When would you like to stop by? If you just want to start a conversation or are unsure, leave it blank</h4>
+            <span id="container"></span>
+            <label for="input_date" class="save-button">Pick a date.</label>
+            <input id="input_date" class="datepicker" name="date" type="text" style="color:var(--coloraccent);" value="15 June, 2017" data-value="2017-06-15"/>
+            <label for="input_time" class="save-button">Pick a time</label>
+            <input id="input_time" class="timepicker" type="time" name="time" style="color:var(--coloraccent);"/>
+            <h4>We'll confirm your appointment time later</h4>
+           
+            <span class="sendmessage-label">What's going on with your vehicle?</span>
+            <li><textarea rows="4" cols="80" class="sendmessage" id="whats_wrong_entry" name="what_wrong_entry"></textarea></li>
+            <span>
+            
+            </span>
+       
+           
+            <h1 class="save-button" id="save_whats_wrong">NEXT</h1>
+        </form>
+    </div>
+
+
+</div>
+
+<div id="contact-detail" class="add-car-wrapper">
+<div class="car-info-form">
+        <h4 class="colorprimary">We'll contact you ASAP. Once this form is submitted you'll be taken to your repair dashboard, we'll automatically text you when a representative responds to your question or to confirm your appointment details.</h4>
+        <form action="#" class="sendmessage-form">
+            <span class="sendmessage-label">Name</span>
+            <li><input type="text" class="sendmessage" id="contact_name" name="contact_name"></li>
+            <span class="sendmessage-label">Phone</span>
+            <li><input type="text" class="sendmessage" id="contact_phone" name="contact_phone"></li>
+            <span>
+            <h1 class="save-button" id="save_contact_details">FINISH</h1>
+            </span>
+        </form>
+</div>
+</div>
+<script>
+
+$(function(){
+    $('#chat-name').val()
+});
+</script>
+
+<div class="chat-window" id="customer-chat-window">
+    <div class="chat-window-close" id="chat-window-close"><h4>CLOSE</h4></div>
+    <div class="chat-window-setup" id="chat-setup">
+        <h3>Let's chat! We're here to help, to get started enter your name and phone number.</h3>
+        <input type="text" id="chat-name" name="chat-name" placeholder="your name" />
+        <input type="text" id="chat-phone" name="chat-phone" placeholder="your phone number" />
+        <h3 id="blank-info" class="headline-highlight-color">We need your first name and phone number to continue, we don't abuse your info it's to confirm you're serious and not trying to waste our time, thanks for understanding.</h3>
+        <button class="big-button" id="chat-start-button">SAY HELLO</button>
+    </div>
+    <div class="chat-window-chatbox" id="chat-main">
+            <div class="chat-wrapper" id="chat_thread">
+                <h3>Say hello?</h3>
+            </div>                
+            <div class="bottom" id="bottom"></div>
+    </div>
+    <div class="chat-window-textbox" id="chat-to-send">
+        <div>
+            <input type="text" id="chat-text-tosend" name="chat-text-tosend" value="" placeholder="your message..." />
+        </div>
+        <div id="send-chat-text" class="cursor-point">
+            <h2 class="send-message-button">SEND</h2>
+        </div>
+    </div>
+</div><!--end chat-window-->
+<input type="hidden" name="username" id="username" value="Tupac" />
+
+
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.js"></script>
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.date.js"></script>
+<script src="https://chromemufflerbearing.com/scripts/pdate/picker.time.js"></script>    
+<script src="https://chromemufflerbearing.com/scripts/pdate/legacy.js"></script>
+
+<script type="text/javascript">
+
+    var $input = $( '.datepicker' ).pickadate({
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy-mm-dd',
+        container: '#container',
+        closeOnSelect: true,
+        closeOnClear: false,
+        labelMonthNext: 'Go to the next month',
+        labelMonthPrev: 'Go to the previous month',
+        labelMonthSelect: 'Pick a month from the dropdown',
+        labelYearSelect: 'Pick a year from the dropdown',
+        selectMonths: true,
+        selectYears: true,
+        selectYears: 4,
+        min: new Date(1970,3,20)
+    })
+
+    var picker = $input.pickadate('picker');
+    picker.set('select', '', { format: 'yyyy-mm-dd' })
+
+    var $input = $( '.timepicker' ).pickatime({
+      // 
+        format: 'h:i A',
+        formatLabel: '<b>h</b>:i <!i>a</!i>',
+        formatSubmit: 'HH:i',
+        hiddenPrefix: 'prefix__',
+        hiddenSuffix: '__suffix',
+        min: [7,30],
+        max: [18,0]
+
+    })
+    var picker2 = $input.pickatime('picker')
+    picker2.set('select', '');
+    //picker.open(); 
+    //picker2.open();
+    
+
+    var $input = $( '.datepickerfuture' ).pickadate({
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy-mm-dd',
+        container: '#container_future',
+        closeOnSelect: true,
+        closeOnClear: false,
+        labelMonthNext: 'Go to the next month',
+        labelMonthPrev: 'Go to the previous month',
+        labelMonthSelect: 'Pick a month from the dropdown',
+        labelYearSelect: 'Pick a year from the dropdown',
+        selectMonths: true,
+        selectYears: true,
+        selectYears: 4,
+        min: new Date(1970,3,20)
+    })
+
+    var $input = $( '.timepickerfuture' ).pickatime({
+      // 
+        format: 'HH:i',
+        formatLabel: '<b>h</b>:i <!i>a</!i>',
+        formatSubmit: 'HH:i',
+        hiddenPrefix: 'prefix__',
+        hiddenSuffix: '__suffix'
+
+    })
+    var picker4 = $input.pickatime('picker')
+    picker4.set('select', '');
+    
+    </script>

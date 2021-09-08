@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+   <script src="https://chromemufflerbearing.com/client/dvi.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <script src="https://chromemufflerbearing.com/moment.js"></script>
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+        .blog-image {
+            width:100%;
+        }
+    </style>
+
+    </head>
+    <body>
+    <div id="main_content_wrapper">            
+            <div class="left-gutter" id="left-gutter">
+                    <div class="far-left">
+                        <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+                    </div>
+                    <div class="mid-left">
+                        <div id="mid-left-panel-home">
+                            <div class="mid-left-panel-wrapper-load margin-left-panel">
+                                <h2 id="vehicle-info-ymme"></h2>
+                                <div id="go-home"></div>                
+                            </div>
+                        </div>
+                        <div id="mid-left-panel-inspection">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h4>Select an inspection</h4>
+                                    <div class="nav-list-wrapper" id="inspection-list">                                    
+                                    </div>
+                                </div>
+                        </div>
+                        <div id="mid-left-panel-message">
+                                <div class="mid-left-panel-wrapper-load margin-left-panel" id="message-left-panel">
+                                    <div id="pagelist"></div>
+                                    <div id="go-message"></div>
+                                </div>
+                            </div>
+                        <div id="mid-left-panel-invoice">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h2>Select an Invoice</h2>
+                                    <div id="invoice-total-list"></div>
+                                    <div id="pagelist">
+    
+                                    </div>
+                                </div>
+                        </div>
+    
+            
+                    </div>
+                </div>
+
+
+<style>
+
+</style>
+<script>
+$(function(){
+    loadalertinfochat();
+    $('#send_message_button').click(function(){
+        savechatmessages();
+    });
+    $('#save_vehicle_details_chat').click(function(){
+        savevehicleinfochat();
+    });    
+    $('#save_contact_details_chat').click(function(){
+        savecontactinfochat();
+    });    
+    
+
+        $('#chat_message_tosend').keypress(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                event.preventDefault();
+                savechatmessages();
+            }
+        }); 
+
+});
+
+
+var savecarchatcode = 0;
+function savevehicleinfochat() {
+    var theymme = '';
+    var plate = $('#theplate').val();
+    var year = $('#vehicle_year').val();
+    var make = $('#vehicle_make').val();
+    var model = $('#vehicle_model').val();
+    var vin = $('#vehicle_vin').val();
+
+    $.ajax({
+        type: "POST",
+        url: "https://chromemufflerbearing.com/edit/vehicle/info",
+        data: {
+            plate: plate,
+            year: year,
+            make: make,
+            model: model,
+            vin: vin
+        }
+    })
+    .done(function( data ) {
+        savecarchatcode = 1;
+        $('#save-vehicle-return-status').append('Saved');
+        var theymme = year + ' ' + make + ' ' + model;
+        $('#vehicle-info-ymme').html('<h1>' + theymme + '</h1>');
+        $('#vehicle-detail').css('display', 'none');
+        if (isfirstload == 1) {
+
+        }
+        savecontactinfochat();
+    })
+    .fail(function( xhr, status, errorThrown ) {
+        if (savecarchatcode === 0) {
+           savevehicleinfochat();
+        }
+    })
+    .always(function( xhr, status ) {
+
+    });
+
+};
+
+var savecontactchatcode = 0;
+function savecontactinfochat() {
+    var theymme = '';
+    var plate = $('#theplate').val();
+    var name = $('#contact_name').val();
+    var phone = $('#contact_phone').val();
+    var email = $('#contact_email').val();
+    var alerttype = $('#contact_alert_type').val();
+
+    $.ajax({
+        type: "POST",
+        url: "https://chromemufflerbearing.com/edit/contact/info",
+        data: {
+            plate: plate,
+            name: name,
+            phone: phone,
+            email: email,
+            alerttype: alerttype
+        }
+    })
+    .done(function( data ) {
+        savecontactchatcode = 1;
+        $('#save-vehicle-return-status').append('Saved');
+        $('#contact-detail').css('display', 'none');
+        if (isfirstload == 1) {
+            window.location.href = 'https://chromemufflerbearing.com/c/message/' + plate;
+        }
+       
+    })
+    .fail(function( xhr, status, errorThrown ) {
+        if (savecontactchatcode === 0) {
+           savecontactinfochat();
+        }
+    })
+    .always(function( xhr, status ) {
+
+    });
+
+};
+
+
+
+var name = '';
+var loadalertinfochatcode = 0;
+function loadalertinfochat() {
+    
+    var howtofix = '';
+    var plate = $('#theplate').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/alert/info/",
+            data: {
+                plate: plate
+            }
+        })
+        .done(function( data ) {
+            loadalertinfocode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            for (var i = 0; i < jsonData.length; ++i) {
+                name = jsonData[i].name;
+                $('#username').val(jsonData[i].name);
+            }
+            loadrepairreasonchat();
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadalertinfochatcode === 0) {
+                loadalertinfochat();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+};
+
+
+
+var loadrepairchatcode = 0;
+function loadrepairreasonchat() {
+    //load repair reason - this is only here locally to get the variable username into place
+    //before the rest of the chat is loaded. the dvi.js does this as well but it comes later after this is loaded
+    //probably a better way to do this I should fix it
+    var whatswrong = '';
+    var howtofix = '';
+    var plate = $('#theplate').val();
+    var name = $('#username').val();
+    $.ajax({
+        type: "POST",
+        url: "https://chromemufflerbearing.com/view/repair/reason/",
+        data: {
+            plate: plate
+        }
+    })
+    .done(function( data ) {
+        loadrepairchatcode = 1;
+        var jsonStr = JSON.stringify(data);
+        var jsonData = JSON.parse(jsonStr);
+        var timestamp = 0;
+        for (var i = 0; i < jsonData.length; ++i) {
+            whatswrong = jsonData[i].whatswrong;
+            howtofix = jsonData[i].howtofix;
+        }
+        $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>'+name+':</h1></div><div class="two-col-border"><h4>'+whatswrong+'</h4></div></div></div>');
+        if (howtofix != null) {
+
+        }
+        loadchatmessages();
+
+
+    })
+    .fail(function( xhr, status, errorThrown ) {
+        if (loadrepairchatcode === 0) {
+            loadrepairreasonchat();
+        }
+    })
+    .always(function( xhr, status ) {
+
+    });
+};
+
+
+
+var loadchatmessagescode = 0;
+function loadchatmessages() {
+    var howtofix = '';
+    var plate = $('#theplate').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/message/",
+            data: {
+                plate: plate
+            }
+        })
+        .done(function( data ) {
+            loadchatmessagescode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            $('#chat_thread').html('</br>');
+
+            for (var i = 0; i < jsonData.length; ++i) {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>'+jsonData[i].sentby+':</h1><h3>'+jsonData[i].nicetime+'</h3></div><div class="two-col-border"><h4>'+jsonData[i].message+'</h4></div></div></div>');
+            }
+            setTimeout(reloadchatmessages, 20000);
+           
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (loadchatmessagescode === 0) {
+                loadchatmessages();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+};
+
+
+var reloadchatmessagescode = 0;
+function reloadchatmessages() {
+    //reload chat messages - doesn't chain like regular load chat messages does so it won't keep loading the invoice list (etc) into the menu over and over
+    var howtofix = '';
+    var plate = $('#theplate').val();
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/view/message/",
+            data: {
+                plate: plate
+            }
+        })
+        .done(function( data ) {
+            reloadchatmessagescode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            $('#chat_thread').html('</br>');
+
+            for (var i = 0; i < jsonData.length; ++i) {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>'+jsonData[i].sentby+':</h1><h3>'+jsonData[i].nicetime+'</h3></div><div class="two-col-border"><h4>'+jsonData[i].message+'</h4></div></div></div>');
+            }
+            setTimeout(reloadchatmessages, 20000);
+           
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (reloadchatmessagescode === 0) {
+                reloadchatmessages();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+};
+
+var isWaitingOnEmail = 0;
+var savechatmessagescode = 0;
+function savechatmessages() {
+    var howtofix = '';
+    var plate = $('#theplate').val();
+    var chatmessage = $('#chat_message_tosend').val();
+    var username = $('#username').val();
+    var datetimenow = moment().format('hh:mm a MM.DD.YYYY');
+
+        $.ajax({
+            type: "POST",
+            url: "https://chromemufflerbearing.com/save/chat/message/",
+            data: {
+                plate: plate,
+                thechatmessage: chatmessage,
+                sentby: username,
+                nicetime: datetimenow
+            }
+        })
+        .done(function( data ) {
+            savechatmessagescode = 1;
+            var jsonStr = JSON.stringify(data);
+            var jsonData = JSON.parse(jsonStr);
+            var timestamp = 0;
+            for (var i = 0; i < jsonData.length; ++i) {
+
+            }
+            $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>'+username+':</h1><h3>'+datetimenow+'</h3></div><div class="two-col-border"><h4>'+chatmessage+'</h4></div></div></div>');
+            $('#chat_message_tosend').val('');
+            document.querySelector('.bottom').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+
+            if (chatmessage === 'email alert on') {
+                setTimeout(function(){
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> Enter Your Email Address please</h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                    isWaitingOnEmail = 1;
+                }, 1000);
+                return;
+            }
+            if (isWaitingOnEmail === 1) {
+                setTimeout(function(){
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> We have your Email as: ' + chatmessage + ' you can say email alert off to turn email alerts off </h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                    isWaitingOnEmail = 0;
+                }, 1000);
+            }
+            if (chatmessage === 'email alert off') {
+                setTimeout(function(){
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> Email Alerts are OFF</h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                }, 1000);
+            }
+            if (chatmessage === 'text alert on') {
+                setTimeout(function(){
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> Text Alerts are ON</h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                
+
+                }, 1000);
+            }
+            if (chatmessage === 'text alert off') {
+                setTimeout(function(){ 
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> Text Alerts are OFF</h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                }, 1000);
+            }
+
+            if (chatmessage === 'repair dash') {
+                setTimeout(function(){ 
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> <a href="https://chromemufflerbearing.com/c/home/'+plate+'"><h2 class="big-button">Repair Dashboard</h2></a></h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                }, 1000);
+            }
+
+            if (chatmessage === 'schedule') {
+                setTimeout(function(){ 
+                    $('#chat_thread').append('<h3><span class="headline-highlight-color">Auto Response:</span> <a href="https://chromemufflerbearing.com/c/home/'+plate+'"><h2 class="big-button">Schedule</h2></a></h3>');
+                    document.querySelector('.bottom').scrollIntoView({
+                        behavior: 'smooth' 
+                    });
+                }, 1000);
+            }
+
+            if(chatmessage === '/botlist') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Commands are /hours /map /address /phone /rate </h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+            if(chatmessage === '/hours') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Our hours are</h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+            if(chatmessage === '/map') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Our map link</h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+            if(chatmessage === '/address') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Our address is</h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+            if(chatmessage === '/phone') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Our phone number is</h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+            if(chatmessage === '/rate') {
+                $('#chat_thread').append('<div class="colorprimary"><div class="two-col-grid"><div class="two-col-border"><h1>Chat Bot:</h1></div><div class="two-col-border"><h4>Our hourly rate is</h4></div></div></div>');
+                document.querySelector('.bottom').scrollIntoView({
+                    behavior: 'smooth' 
+                });
+            }
+
+
+        })
+        .fail(function( xhr, status, errorThrown ) {
+            if (savechatmessagescode === 0) {
+                savechatmessages();
+            }
+        })
+        .always(function( xhr, status ) {
+
+        });
+};
+
+
+</script>
+<style>
+        .everything-wrapper {
+            position: absolute;
+            top:0%;
+            right:0%;
+            width:75%;
+            display: grid;
+            grid-template-columns:100%;
+            grid-gap: 0px;
+            padding-bottom:10%;
+            height:auto;
+        }
+        .everything-wrapper > div {
+            padding: 3%;
+            margin: 0%;
+            font-size: 30px;
+        }
+
+        .chat-form-wrapper {
+            background-color:var(--coloraccent);
+            position: fixed;
+            bottom:0%;
+            right:0%;
+            left:25%;
+            width:75%;
+            display: grid;
+            grid-template-columns:80% 20%;
+            grid-gap: 1%;
+            padding-top:0%;
+            height:10%;
+            margin-top:0%;
+            z-index: 99;
+            padding-bottom:5%;
+        }
+        .chat-form-wrapper > div {
+            padding: 0%;
+            margin-top:0%;
+            margin-left:0%;
+            margin-right:0%;
+            font-size: 30px;
+            height:100%;
+        }
+        @media only screen and (max-width: 900px) {
+
+        .chat-form-wrapper {
+            background-color:var(--coloraccent);
+            position: fixed;
+            bottom:0%;
+            right:0%;
+            left:0%;
+            width:100%;
+            display: grid;
+            grid-template-columns:90% 10%;
+            grid-gap: 1%;
+            padding-top:0%;
+            height:10%;
+            margin-top:0%;
+            z-index: 99;
+            padding-bottom:5%;
+        }
+        .chat-form-wrapper > div {
+            padding: 0%;
+            margin-top:0%;
+            margin-left:0%;
+            margin-right:0%;
+            font-size: 30px;
+            height:100%;
+        }
+            .everything-wrapper {
+                width:100%;
+            }    
+        }
+</style>
+    <div class="chat-form-wrapper">
+        <div>
+            <input type="text" class="sendmessage" id="chat_message_tosend" name="chat_message_tosend" placeholder="your message...">
+        </div>
+        <div>
+            <h1 class="save-button" id="send_message_button">SEND</h1>
+        </div>
+    </div>
+
+            <div class="everything-wrapper" id="home_screen">
+                
+                  <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div>
+                                <h1>Let's Chat!</h1>
+                            </div>
+                            <div>
+                                <h5>We usually respond within {an hour} during business hours we'll auto send you a text to let you know we've responded you can change your alert settings in the settings menu</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="coloraccent">
+                            <div class="two-col-grid">
+                                <div>
+                                    <h1>Chat bot</h1>
+                                </div>
+                                <div>
+                                    <h5>You can type /botlist for a list of chatbot commands otherwise say hello or ask a quesiton and somebody will help you ASAP</h5>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="colorprimary" id="chat_thread"></div>
+                    
+                    <div class="bottom"></div>
+
+                </div>
+                <div class="everything-wrapper" id="screen_settings">
+                        <div class="coloraccent" id="close-settings">
+                            <div class="two-col-grid">
+                                <div><h1> <- Back </h1></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="coloraccent" id="close-settings">
+                            <div class="two-col-grid">
+                                <div>
+                                    <h1>Settings!</h1>
+                                </div>
+                                <div>
+                                    <h3>Change your alert settings here</h3>
+                                </div>
+                            </div>
+                        </div>
+    
+                </div>    
+                <button class="menu-button" id="open-menu">
+                    =
+                </button>
+                <button class="menu-button" id="close-menu">
+                    X
+                </button>    
+
+</div><!-- main_content_wrapper-->
+
+<style>
+.sendmessage-form > li {
+    position:relative;
+    list-style: none;
+    margin-top:3%;
+}
+.sendmessage-label {
+    position:relative;
+    margin-top:2%;
+}
+.sendmessage {
+    font-size:1.8em;
+}
+</style>
+
+
+
+        <!-- from v1-->
+        <div id="vehicle-detail" class="add-car-wrapper">
+            <div class="car-info-form">
+                    <h3>To help you better we need some basic details</h3>
+                    <h3></h3>
+                <form action="#" class="sendmessage-form">
+                    <span class="sendmessage-label">
+                    </span>
+                    <span class="sendmessage-label">Your Name Please?</span>
+                        <li><input type="text" class="sendmessage" id="contact_name" name="contact_name" placeholder="Your Name"></li>    
+                        <span class="sendmessage-label">Vehicle Year</span>
+                        <li><input type="text" class="sendmessage" id="vehicle_year" name="vehicle_year" placeholder="Year"></li>
+                        <span class="sendmessage-label">Vehicle Make</span>
+                        <li><input type="text" class="sendmessage" id="vehicle_make" name="vehicle_make" placeholder="Make"></li>
+                        <span class="sendmessage-label">Vehicle Model</span>
+                        <li><input type="text" class="sendmessage" id="vehicle_model" name="vehicle_model" placeholder="Model"></li>
+                        <span class="sendmessage-label">How Many Miles Does it Have? (estimate)</span>
+                        <li><input type="text" class="sendmessage" id="vehicle_vin" name="vehicle_vin" placeholder="Miles (estimate)"></li>
+                        <span>
+                        <h1 class="save-button" id="save_vehicle_details_chat">NEXT</h1>
+                        <h3 id="save-vehicle-return-status"></h3>
+                        </span>
+                </form>
+            </div>
+        
+        
+        </div>
+     
+        
+        
+        
+        
+        <script src="https://chromemufflerbearing.com/scripts/pdate/picker.js"></script>
+        <script src="https://chromemufflerbearing.com/scripts/pdate/picker.date.js"></script>
+        <script src="https://chromemufflerbearing.com/scripts/pdate/picker.time.js"></script>    
+        <script src="https://chromemufflerbearing.com/scripts/pdate/legacy.js"></script>
+        
+        <script type="text/javascript">
+        
+            var $input = $( '.datepicker' ).pickadate({
+                format: 'yyyy-mm-dd',
+                formatSubmit: 'yyyy-mm-dd',
+                container: '#container',
+                closeOnSelect: true,
+                closeOnClear: false,
+                labelMonthNext: 'Go to the next month',
+                labelMonthPrev: 'Go to the previous month',
+                labelMonthSelect: 'Pick a month from the dropdown',
+                labelYearSelect: 'Pick a year from the dropdown',
+                selectMonths: true,
+                selectYears: true,
+                selectYears: 4,
+                min: new Date(1970,3,20)
+            })
+        
+            var picker = $input.pickadate('picker');
+            picker.set('select', '', { format: 'yyyy-mm-dd' })
+        
+            var $input = $( '.timepicker' ).pickatime({
+              // 
+                format: 'h:i A',
+                formatLabel: '<b>h</b>:i <!i>a</!i>',
+                formatSubmit: 'HH:i',
+                hiddenPrefix: 'prefix__',
+                hiddenSuffix: '__suffix',
+                min: [7,30],
+                max: [18,0]
+        
+            })
+            var picker2 = $input.pickatime('picker')
+            picker2.set('select', '');
+            //picker.open(); 
+            //picker2.open();
+            
+        
+            var $input = $( '.datepickerfuture' ).pickadate({
+                format: 'yyyy-mm-dd',
+                formatSubmit: 'yyyy-mm-dd',
+                container: '#container_future',
+                closeOnSelect: true,
+                closeOnClear: false,
+                labelMonthNext: 'Go to the next month',
+                labelMonthPrev: 'Go to the previous month',
+                labelMonthSelect: 'Pick a month from the dropdown',
+                labelYearSelect: 'Pick a year from the dropdown',
+                selectMonths: true,
+                selectYears: true,
+                selectYears: 4,
+                min: new Date(1970,3,20)
+            })
+        
+            var picker3 = $input.pickadate('picker');
+         //   picker3.set('select', '', { format: 'yyyy-mm-dd' })
+        
+            var $input = $( '.timepickerfuture' ).pickatime({
+              // 
+                format: 'HH:i',
+                formatLabel: '<b>h</b>:i <!i>a</!i>',
+                formatSubmit: 'HH:i',
+                hiddenPrefix: 'prefix__',
+                hiddenSuffix: '__suffix'
+        
+            })
+            var picker4 = $input.pickatime('picker')
+
+            </script>

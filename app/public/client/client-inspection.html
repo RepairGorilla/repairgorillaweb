@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>chromemufflerbearing.com</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://chromemufflerbearing.com/jquery-3.2.1.min.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi.js"></script>
+    <script src="https://chromemufflerbearing.com/client/dvi-ui.js"></script>
+    <link href="https://chromemufflerbearing.com/client/dashdesign.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.css" rel="stylesheet" type="text/css" />    
+    <link href="https://chromemufflerbearing.com/scripts/pdate/default.date.css" rel="stylesheet" type="text/css" />  
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+
+    </style>
+
+    </head>
+    <body>
+    <div id="main_content_wrapper">            
+            <div class="left-gutter" id="left-gutter">
+                    <div class="far-left">
+                        <div id="close_mid_menu"><h1><img src="https://chromemufflerbearing.com/appicon/menu_icon_flat_white.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-home"><h1><img src="https://chromemufflerbearing.com/appicon/home-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-inspection"><h1><img src="https://chromemufflerbearing.com/appicon/inspection-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-message"><h1><img src="https://chromemufflerbearing.com/appicon/chat-icon.png" class="side-menu-icons"/></h1></div>
+                        <div id="open-panel-invoice"><h1><img src="https://chromemufflerbearing.com/appicon/invoice-icon.png" class="side-menu-icons"/></h1></div>
+                    </div>
+                    <div class="mid-left">
+                        <div id="mid-left-panel-home">
+                            <div class="mid-left-panel-wrapper-load margin-left-panel">
+                                <h2 id="vehicle-info-ymme"></h2>
+                                <div id="go-home"></div>                
+                            </div>
+                        </div>
+                        <div id="mid-left-panel-inspection">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h4>Select an inspection</h4>
+                                    <div class="nav-list-wrapper" id="inspection-list">                                    
+                                    </div>
+                                </div>
+                        </div>
+                        <div id="mid-left-panel-message">
+                                <div class="mid-left-panel-wrapper-load margin-left-panel" id="message-left-panel">
+                                    <div id="pagelist"></div>
+                                    <div id="go-message"></div>
+                                </div>
+                            </div>
+                        <div id="mid-left-panel-invoice">
+                                <div class="mid-left-panel-wrapper-load" id="invoice-left-panel">
+                                    <h2>Select an Invoice</h2>
+                                    <div id="invoice-total-list"></div>
+                                    <div id="pagelist">
+    
+                                    </div>
+                                </div>
+                        </div>
+    
+            
+                    </div>
+                </div>
+
+<script>
+
+$(function(){
+    loadinspectedparts();
+
+ var loadinspectionpartcode = 0;
+ function loadinspectedparts() {
+     var whatswrong = '';
+     var plate = $('#theplate').val();
+         var inspectionid = $('#inspectionid').val();
+         $.ajax({
+             type: "POST",
+             url: "https://chromemufflerbearing.com/view/inspection/part",
+             data: {
+                 plate: plate,
+                 inspectionid: inspectionid
+             }
+         })
+         .done(function( data ) {
+             loadinspectionpartcode = 1;
+             var jsonStr = JSON.stringify(data);
+             var jsonData = JSON.parse(jsonStr);
+             for (var i = 0; i < jsonData.length; ++i) {
+                 var resultspanel = '';
+                 resultspanel = resultspanel + '<div class="two-col-grid">';
+                 var inspectionimage = '';
+                 if (jsonData[i].photourl != null || jsonData[i].photourl != '') {
+                     inspectionimage = inspectionimage + '<a href="'+jsonData[i].photourl+'" target="_blank"><img src="' +jsonData[i].photourl + '" class="status-image" /></a>';
+                 }
+                 if (jsonData[i].partcondition === 'red') {
+                       resultspanel = resultspanel + '<div class="two-col-border"><h2>'+jsonData[i].partdesc+'</h2>'+inspectionimage+'</div><div class="two-col-border"><h3>RED</h3><h4>'+jsonData[i].notes+'</div>';
+                 }
+                 if (jsonData[i].partcondition === 'yellow') {
+                    resultspanel = resultspanel + '<div class="two-col-border"><h2>'+jsonData[i].partdesc+'</h2>'+inspectionimage+'</div><div class="two-col-border"><h3>YELLOW</h3><h4>'+jsonData[i].notes+'</div>';
+                 }
+                 if (jsonData[i].partcondition === 'green') {
+                    resultspanel = resultspanel + '<div class="two-col-border"><h2>'+jsonData[i].partdesc+'</h2>'+inspectionimage+'</div><div class="two-col-border"><h3>GREEN</h3><h4>'+jsonData[i].notes+'</div>';
+                 }
+
+                 resultspanel = resultspanel + '</div>';
+
+                 $('#inspection-results-container').append(resultspanel);
+
+             }
+         })
+         .fail(function( xhr, status, errorThrown ) {
+             if (loadinspectionpartcode === 0) {
+                 loadinspectedparts();
+             }
+         })
+         .always(function( xhr, status ) {
+             $('#save-resolution-return-status').append('always');
+         });
+
+ };
+
+
+
+});
+
+</script>            
+
+
+
+        <div class="everything-wrapper" id="home_screen">
+                  <div class="coloraccent">
+                        <div class="two-col-grid">
+                            <div>
+                                <h1>Inspection Results</h1>
+                            </div>
+                            <div>
+                                <h3>The results are in, here's what we found</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="colorprimary" id="inspection-results-container">
+                        
+                    </div>    
+                  
+        </div> <!--end home_screen -->
+        <button class="menu-button" id="open-menu">
+            =
+        </button>
+        <button class="menu-button" id="close-menu">
+            X
+        </button>    
+
+</div><!-- main_content_wrapper-->
+
+
